@@ -75,3 +75,19 @@ Variation 2 says :- Let's select that parent/neighbour of lowest degree ones whi
 Understanding till now, variation 2 might remove edges faster but it should give same info as variation 1.    
 
 There is another variation, i.e. variation 3 for which it's even more complex but let's stick to these 2 for initial testing because for 3rd variation implementation, a new & more complex data structure will have to be designed. Just like d.s. for variation 2 is complex than for variation 1.    
+
+
+  Algo for variation 3:    
+
+    for a particular state of graph,    
+    select a node (N) with minimum degree (total = in + out )    
+    if { node has 0 degree -> discard it -or- put into not-required set. }
+    else {    
+      for all such candidate nodes C from the graph having same degree as N    
+        { select that parent/neighbour (P) of any C by removing which (P) 	
+	      we get maximum number of leaf nodes or a state of graph to yield maximum leaf nodes				 
+        }    
+      update degree of all neighbours of P    
+      remove P from Main-Set and put into required-set    
+    }
+    
