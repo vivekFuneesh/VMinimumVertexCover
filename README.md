@@ -89,5 +89,12 @@ There is another variation, i.e. variation 3 for which it's even more complex bu
         }    
       update degree of all neighbours of P    
       remove P from Main-Set and put into required-set    
-    }
+    }    
     
+In other way,    
+    
+    START :    
+        select node (X) with maximum number of lowest degree connected nodes    
+        Put (X) into required-set     
+        Update degrees of connected nodes by -1    
+    END :    
