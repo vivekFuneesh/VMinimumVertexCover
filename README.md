@@ -95,6 +95,7 @@ In other way,
     
     START :    
         select node (X) with maximum number of lowest degree connected nodes    
+	if same number of lowest degree neighbours then select anyone.
         Put (X) into required-set     
         Update degrees of connected nodes by -1    
     END :    
@@ -117,10 +118,41 @@ In other way,
     because even though both N1 and N2 have same lower degrees    
     connect for 1st 2 neighbours but N2 has 3rd neighbour too    
     which will yield a state of graph having lesser edges.   
+
+    Similarly, if N1 has 1 degree connects in quantity X,    
+    N2 has 1 degree connects un quantity Y s.t. X > Y then    
+    we will select N1 using 2nd variation. And if X == Y then    
+    we will use above formula recursively for the next lower    
+    degree connects.
         
     So, preference is :- 1st preference to lowest degree    
     neighbour, 2nd to maximum number of neighbours, if both    
     are same then select anyone cause at some point either will    
     lead the graph to a same structural state via same number of steps.    
 
-	The same concept which is working in above 3 variations.
+	The same concept which is working in above 3 variations.    
+
+
+As for the time being I don't have habit, intent, knowledge of proving this via equations so, lastly to say :-    
+These variations are not alternatives rather these are s.t. the chances of "success" or "proof of correctness" is var4 > var3 > var2> var1.    
+But my observation says that var1 is the minimal required condition to create a minimum vertex cover and var2 is adding 1 more condition, then var3 introducing 1 condition on top of var2 and so does var4.    
+
+
+A glimpse  -:-  
+        
+    Var1 :- Select any node having lowest degree connected node OR
+	select parent(Pi) of any lowest degree node(Ni).    
+
+    Var2 :- Select that parent(Pi) of all such lowest degree nodes(Cn Candidate nodes) which    
+    has maximum number of neighbours.    
+
+    Var3 :- Select that parent(Pi) of all such lowest degree nodes(Cn) which    
+    has maximum number of immediate lowest degree neighbour among all parents(P) of   
+    such nodes(Cn), if more than one such parent then select anyone.    
+        
+    Var4 :- Select that parent(Pi) of all such lowest degree nodes(Cn) which has    
+    all the neighbours of lowest degrees among all parents(P), if 2 or    
+    more nodes have same such state then select the    
+    one having maximum number of neighbours, if this is also same then    
+    select any.
+	
