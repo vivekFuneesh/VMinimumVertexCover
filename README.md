@@ -98,3 +98,8 @@ In other way,
         Put (X) into required-set     
         Update degrees of connected nodes by -1    
     END :    
+
+    Note:- To check max lowest connected ones, modify d.s. s.t.    
+    Heap will have data for keeping count of occurrence of    
+    a particular degree nodes. Should be achievable using    
+    hasp map just like reference inside heap is tracked in 2nd variation in O(1).
