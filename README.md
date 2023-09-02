@@ -102,4 +102,25 @@ In other way,
     Note:- To check max lowest connected ones, modify d.s. s.t.    
     Heap will have data for keeping count of occurrence of    
     a particular degree nodes. Should be achievable using    
-    hasp map just like reference inside heap is tracked in 2nd variation in O(1).
+    hasp map just like reference inside heap is tracked in 2nd variation in O(1).    
+
+	--------------------    
+ ----------------    
+    But if one wish to go 4th variation which is to check lowest     
+    degrees of all, then it might go to O(n^3 log n)...    
+    
+    eg. node N1 has 2 connects with degree {1,2}, node N2 has    
+    3 connects with degree{1,2,3}, node N3 has 3 connects with    
+    degree {1,1} then we will select N3 first because after 1    
+    the lowest degree is 1 again which is lower than others    
+    having 2 and if there was no N3, then we will select N2    
+    because even though both N1 and N2 have same lower degrees    
+    connect for 1st 2 neighbours but N2 has 3rd neighbour too    
+    which will yield a state of graph having lesser edges.   
+        
+    So, preference is :- 1st preference to lowest degree    
+    neighbour, 2nd to maximum number of neighbours, if both    
+    are same then select anyone cause at some point either will    
+    lead the graph to a same structural state via same number of steps.    
+
+	The same concept which is working in above 3 variations.
