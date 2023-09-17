@@ -23,9 +23,12 @@
 package vivek.min_vertex_cover;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import models.NodeForVersion1;
 import utility.Heap;
@@ -40,7 +43,48 @@ public class MinVertexCover {
 		if(edges==null || edges.length==0)return 0;
 		if(edges.length==1)return 1;
 
+		Map<Integer, NodeForVersion1> graph = createGraph(edges);
+		
 		int res=0;
+		
+		Heap queue = new Heap(new NodeForVersion1(-1));
+		graph.values().stream().forEach(value->{queue.add(value);});
+		
+		res = processQueue(queue, required, not_required);		
+	
+		//no benefit for klaus witzel graph
+		//List<Integer> newRequired = tryMinify(required, edges);
+//		System.out.println("HI"+newRequired.size());
+
+		return res;
+	}
+	
+	
+	List<Integer> tryMinify(List<Integer> required, int[][] edges) {
+		
+		Set<Integer> set = new HashSet<Integer>(required);
+
+		return required.stream()
+		.filter(vertex->isMandate(vertex.intValue(), edges, set))
+		.collect(Collectors.toList());
+	}
+	
+	boolean isMandate(int vertex, int[][] edges, Set<Integer> set) {
+		
+		set.remove(vertex);
+		
+		for(int i=0;i<edges.length;i++) {
+			if(! (set.contains(edges[i][0]) || set.contains(edges[i][1])) ) {
+				set.add(vertex);
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
+	Map<Integer, NodeForVersion1> createGraph(int[][] edges) {
+		
 		Map<Integer, NodeForVersion1> graph = new HashMap<>();
 		NodeForVersion1 temp1 = null, temp2 = null;
 
@@ -66,14 +110,11 @@ public class MinVertexCover {
 			}
 		}
 		//System.out.println("Adjacency List="+ graph);
-		Heap queue = new Heap(new NodeForVersion1(-1));
-		graph.values().stream().forEach(value->{queue.add(value);});
-
-		res = processQueue(queue, required, not_required);
-
-		return res;
+		return graph;
 	}
-
+	
+	
+	
 	/**
 	 * worst case time is Sum(x log x), for x = [V, 1]; 
 	 * 			= O (1/2 * V^2 log V - 1/4 * V^2 + V ) = O ((V^2)*(log V))
@@ -106,7 +147,7 @@ public class MinVertexCover {
 //				System.out.println("Parent selected node="+ node.value);
 				
 				Iterator<NodeForVersion1> itr = node.connected.iterator();
-				
+				queue.remove(node);		//log(Vi), for ith loop
 				//no.-of-neighbours, V-1 in worst-case-when-all-nodes-are-connected, 
 				//where V keeps on decrementing by 1 in every outer loop
 				while(itr.hasNext()) {	
@@ -122,7 +163,7 @@ public class MinVertexCover {
 				required.add(node.value);
 				node.degree=0;
 				node.connected.clear(); //no need to keep this 
-				queue.remove(node);		//log(Vi), for ith loop
+				
 			}
 		}
 		System.out.println("required="+required+"\noperations="+operations);

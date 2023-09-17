@@ -110,7 +110,7 @@ public class Heap{
 				swap(pos, leftChild(pos));
 				downHeapify(leftChild(pos));
 			}
-		} 
+		}  
 	}
 	
 	public void downHeapify(CommonNode node) {
@@ -210,6 +210,13 @@ public class Heap{
 	public CommonNode peek() {
 		if(size==0)throw new RuntimeException("Empty queue");
 		return Heap.get(1).data;
+	}
+	
+	
+	public void heapify() {
+		for(int i=size;i>=1;i--) {
+			downHeapify(i);
+		}
 	}
 	
 	@Override
