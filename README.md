@@ -141,13 +141,13 @@ But my observation says that var1 is the minimal required condition to create a 
 A glimpse  -:-  
         
     Var1 :- Select any node having lowest degree connected node OR
-	select parent(Pi) of any lowest degree node(Ni).    
+	 select parent(Pi) of any lowest degree node(Ni).    
 
     Var2 :- Select that parent(Pi) of all such lowest degree nodes(Cn Candidate nodes) which    
     has maximum number of neighbours.    
 
     Var3 :- Select that parent(Pi) of all such lowest degree nodes(Cn) which    
-    has maximum number of immediate lowest degree neighbour among all parents(P) of   
+    has maximum number of lowest degree neighbours among all parents(P) of   
     such nodes(Cn), if more than one such parent then select anyone.    
         
     Var4 :- Select that parent(Pi) of all such lowest degree nodes(Cn) which has    
@@ -156,3 +156,12 @@ A glimpse  -:-
     one having maximum number of neighbours, if this is also same then    
     select any.
 	
+	 In a way, var4 puts maximum choice on top of lowest connected state of graph
+	 
+This can also be seen as -:-  
+        
+    At any point of time, select that state of graph which will either take    
+    out the maximum possible leaf nodes or will yield maximum possible    
+    lowest degree nodes.    
+    And this graph state selection is done by choosing only one node to be removed.    
+    

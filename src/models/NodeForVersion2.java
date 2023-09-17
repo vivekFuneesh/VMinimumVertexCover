@@ -28,38 +28,39 @@ import java.util.stream.Collectors;
 
 import utility.Heap;
 
-public class NodeForVersion2 extends CommonNode{
-	
+public class NodeForVersion2 extends CommonNode {
+
 	public Heap connected;
 	public Set<NodeForVersion2> track;
-	
+
 	public NodeForVersion2(int val) {
 		this.value = val;
 		connected = new Heap(new NodeForVersion2(-1, 0), true);
 		track = new HashSet<>();
 	}
-	
+
 	private NodeForVersion2(int val, int deg) {
 		this.value = val;
-		this.degree=deg;	
-	} 
-	
+		this.degree = deg;
+	}
+
 	public static NodeForVersion2 instantiateWithDegree(int value, int degree) {
 		NodeForVersion2 node = new NodeForVersion2(value);
 		node.degree = degree;
 		return node;
 	}
-	
 
 	@Override
 	public boolean equals(Object o) {
-		//System.out.println("checking for"+ this.value +" == "+ ((NodeForVersion2)o).value);
-		return this.value==((NodeForVersion2)o).value;
+		// System.out.println("checking for"+ this.value +" == "+
+		// ((NodeForVersion2)o).value);
+		return this.value == ((NodeForVersion2) o).value;
 	}
 
 	@Override
 	public String toString() {
-		return value+"={"+connected.getInternalHeap().stream().map(x->x.data.value).collect(Collectors.toList())+"}";
+		return value + "={" + connected.getInternalHeap().stream().map(x -> x.data.value).collect(Collectors.toList())
+				+ "}";
 	}
-	
+
 }

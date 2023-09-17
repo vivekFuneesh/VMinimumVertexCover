@@ -26,11 +26,11 @@ import java.util.Comparator;
 
 import models.CommonNode;
 
-public class ReverseOrderVertexComparator implements Comparator<CommonNode>{
+public class ReverseOrderVertexComparator implements Comparator<CommonNode> {
 
 	@Override
 	public int compare(CommonNode o1, CommonNode o2) {
-		return  -o1.degree + o2.degree;
+		return -o1.degree + o2.degree;
 	}
 
 }

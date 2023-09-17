@@ -25,11 +25,11 @@ package models;
 public class HeapNode {
 	public CommonNode data;
 	public int index;
-	
+
 	public HeapNode(CommonNode data) {
 		this.data = data;
 	}
-	
+
 	@Override
 	public String toString() {
 		return data.toString();
