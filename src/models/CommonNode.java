@@ -23,14 +23,12 @@
 package models;
 
 public class CommonNode {
-	public int degree=0;
-	public int value=-1;
-	
+	public int degree = 0;
+	public int value = -1;
 
 	@Override
 	public int hashCode() {
 		return value;
 	}
 
-	
 }

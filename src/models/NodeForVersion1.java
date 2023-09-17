@@ -27,22 +27,25 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class NodeForVersion1 extends CommonNode {
-	
+
 	public Set<NodeForVersion1> connected = new HashSet<>();
 
-	public NodeForVersion1(int val) {this.value = val;}	
+	public NodeForVersion1(int val) {
+		this.value = val;
+	}
 
 	@Override
 	public boolean equals(Object o) {
-		
-		//System.out.println("checking for"+ this.value +" == "+ ((NodeForVersion1)o).value);
-		
-		return this.value==((NodeForVersion1)o).value;
+
+		// System.out.println("checking for"+ this.value +" == "+
+		// ((NodeForVersion1)o).value);
+
+		return this.value == ((NodeForVersion1) o).value;
 	}
-	
+
 	@Override
 	public String toString() {
-		return value+"={"+connected.stream().map(x->x.value).collect(Collectors.toList())+"}";
+		return value + "={" + connected.stream().map(x -> x.value).collect(Collectors.toList()) + "}";
 	}
-	
+
 }

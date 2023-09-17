@@ -31,13 +31,13 @@ import java.util.Map;
 import models.CommonNode;
 import models.HeapNode;
 
-public class Heap{
+public class Heap {
 
 	private List<HeapNode> Heap; // having 1 more element at 0th index
-	private int size; //actual size
+	private int size; // actual size
 	private boolean isMax = false;
-	
-	//to track
+
+	// to track
 	public Map<CommonNode, Integer> trackIndex;
 
 	public Heap(CommonNode node) {
@@ -47,7 +47,7 @@ public class Heap{
 		Heap.add(new HeapNode(node));
 		trackIndex = new HashMap<>();
 	}
-	
+
 	public Heap(CommonNode node, boolean isMax) {
 		this.isMax = isMax;
 		this.size = 0;
@@ -65,83 +65,86 @@ public class Heap{
 	}
 
 	private int leftChild(int pos) {
-		return (2 * pos)  ;
+		return (2 * pos);
 	}
 
 	private int rightChild(int pos) {
 		return (2 * pos) + 1;
 	}
 
-
 	private void swap(int fpos, int spos) {
 		HeapNode tmp;
 		tmp = Heap.get(fpos);
-		Heap.set(fpos, Heap.get(spos)); Heap.get(fpos).index=fpos;
-		Heap.set(spos, tmp);tmp.index=spos;
+		Heap.set(fpos, Heap.get(spos));
+		Heap.get(fpos).index = fpos;
+		Heap.set(spos, tmp);
+		tmp.index = spos;
 		trackIndex.put(Heap.get(fpos).data, Heap.get(fpos).index);
 		trackIndex.put(Heap.get(spos).data, Heap.get(spos).index);
 	}
-	
+
 	private boolean compareWithChild(int posValue, int childValue) {
-		if(isMax) {
+		if (isMax) {
 			return posValue < childValue;
 		}
 		return posValue > childValue;
 	}
-	
+
 	private boolean compareWithParent(int posValue, int parentValue) {
-		if(isMax) {
+		if (isMax) {
 			return posValue > parentValue;
 		}
 		return posValue < parentValue;
 	}
 
 	public void downHeapify(int pos) {
-		if (pos > (size / 2) )
+		if (pos > (size / 2))
 			return;
 
-		if ( compareWithChild(Heap.get(pos).data.degree, Heap.get(leftChild(pos)).data.degree) || 
-				(pos*2+1<=size && compareWithChild(Heap.get(pos).data.degree, Heap.get(rightChild(pos)).data.degree))) {
+		if (compareWithChild(Heap.get(pos).data.degree, Heap.get(leftChild(pos)).data.degree) || (pos * 2 + 1 <= size
+				&& compareWithChild(Heap.get(pos).data.degree, Heap.get(rightChild(pos)).data.degree))) {
 
-			if(pos*2+1<=size && compareWithChild(Heap.get(leftChild(pos)).data.degree, Heap.get(rightChild(pos)).data.degree)) {
+			if (pos * 2 + 1 <= size
+					&& compareWithChild(Heap.get(leftChild(pos)).data.degree, Heap.get(rightChild(pos)).data.degree)) {
 				swap(pos, rightChild(pos));
 				downHeapify(rightChild(pos));
 			} else {
 				swap(pos, leftChild(pos));
 				downHeapify(leftChild(pos));
 			}
-		}  
+		}
 	}
-	
+
 	public void downHeapify(CommonNode node) {
 		int pos = trackIndex.get(node);
-		if (pos > (size / 2) )
+		if (pos > (size / 2))
 			return;
 
-		if ( compareWithChild(Heap.get(pos).data.degree, Heap.get(leftChild(pos)).data.degree) || 
-				(pos*2+1<=size && compareWithChild(Heap.get(pos).data.degree, Heap.get(rightChild(pos)).data.degree))) {
+		if (compareWithChild(Heap.get(pos).data.degree, Heap.get(leftChild(pos)).data.degree) || (pos * 2 + 1 <= size
+				&& compareWithChild(Heap.get(pos).data.degree, Heap.get(rightChild(pos)).data.degree))) {
 
-			if(pos*2+1<=size && compareWithChild(Heap.get(leftChild(pos)).data.degree, Heap.get(rightChild(pos)).data.degree)) {
+			if (pos * 2 + 1 <= size
+					&& compareWithChild(Heap.get(leftChild(pos)).data.degree, Heap.get(rightChild(pos)).data.degree)) {
 				swap(pos, rightChild(pos));
 				downHeapify(rightChild(pos));
 			} else {
 				swap(pos, leftChild(pos));
 				downHeapify(leftChild(pos));
 			}
-		} 
+		}
 	}
-	
+
 	public void heapifyUp(int pos) {
 		HeapNode temp = Heap.get(pos);
 
-		while(pos>0 && parent(pos) >0 && compareWithParent(temp.data.degree, Heap.get(parent(pos)).data.degree)){
+		while (pos > 0 && parent(pos) > 0 && compareWithParent(temp.data.degree, Heap.get(parent(pos)).data.degree)) {
 			Heap.set(pos, Heap.get(parent(pos)));
-			Heap.get(pos).index=pos;
+			Heap.get(pos).index = pos;
 			trackIndex.put(Heap.get(pos).data, pos);
 			pos = parent(pos);
 		}
 		Heap.set(pos, temp);
-		temp.index=pos;
+		temp.index = pos;
 		trackIndex.put(temp.data, pos);
 	}
 
@@ -149,39 +152,40 @@ public class Heap{
 		int pos = trackIndex.get(element);
 		HeapNode temp = Heap.get(pos);
 
-		while(pos>0 && parent(pos) >0 && compareWithParent(temp.data.degree, Heap.get(parent(pos)).data.degree)){
+		while (pos > 0 && parent(pos) > 0 && compareWithParent(temp.data.degree, Heap.get(parent(pos)).data.degree)) {
 			Heap.set(pos, Heap.get(parent(pos)));
-			Heap.get(pos).index=pos;
+			Heap.get(pos).index = pos;
 			trackIndex.put(Heap.get(pos).data, pos);
 			pos = parent(pos);
 		}
 		Heap.set(pos, temp);
-		temp.index=pos;
-		trackIndex.put(temp.data,  pos);
+		temp.index = pos;
+		trackIndex.put(temp.data, pos);
 	}
 
 	public void add(CommonNode element) {
-		//System.out.println("before pus, heap= "+Heap);
+		// System.out.println("before pus, heap= "+Heap);
 		HeapNode tmp = new HeapNode(element);
-		if(size == Heap.size()-1) {
+		if (size == Heap.size() - 1) {
 			Heap.add(tmp);
-			tmp.index=++size;
+			tmp.index = ++size;
 		} else {
 			Heap.set(++size, tmp);
-			tmp.index=size;
+			tmp.index = size;
 		}
 
 		trackIndex.put(element, tmp.index);
 		int current = size;
 		heapifyUp(current);
-		//System.out.println("after push, heap= "+Heap);
-		
+		// System.out.println("after push, heap= "+Heap);
+
 	}
-	
+
 	public void remove(CommonNode element) {
-		
-		if(size==0)throw new RuntimeException("Empty queue");
-		
+
+		if (size == 0)
+			throw new RuntimeException("Empty queue");
+
 		int ind = trackIndex.get(element);
 		swap(ind, size);
 		Heap.remove(size);
@@ -191,10 +195,11 @@ public class Heap{
 	}
 
 	public CommonNode poll() {
-		if(size==0)throw new RuntimeException("Empty queue");
+		if (size == 0)
+			throw new RuntimeException("Empty queue");
 		CommonNode min = Heap.get(1).data;
 		swap(1, size);
-		
+
 //		Heap.set(1, Heap.get(size--));
 //		Heap.get(1).index=1;
 		Heap.remove(size--);
@@ -202,27 +207,27 @@ public class Heap{
 		downHeapify(1);
 		return min;
 	}
-	
+
 	public boolean isEmpty() {
-		return size ==0;
+		return size == 0;
 	}
-	
+
 	public CommonNode peek() {
-		if(size==0)throw new RuntimeException("Empty queue");
+		if (size == 0)
+			throw new RuntimeException("Empty queue");
 		return Heap.get(1).data;
 	}
-	
-	
+
 	public void heapify() {
-		for(int i=size;i>=1;i--) {
+		for (int i = size; i >= 1; i--) {
 			downHeapify(i);
 		}
 	}
-	
+
 	@Override
-    public String toString() {
-        return Heap.toString();
-    }
+	public String toString() {
+		return Heap.toString();
+	}
 
 	public Iterator<HeapNode> iterator() {
 		// TODO Auto-generated method stub
@@ -230,11 +235,11 @@ public class Heap{
 		itr.next();// skipping -1 node
 		return itr;
 	}
-	
+
 	public List<HeapNode> getInternalHeap() {
 		return this.Heap;
 	}
-	
+
 	public void clear() {
 		size = 0;
 		HeapNode tmp = Heap.get(0);
