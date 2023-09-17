@@ -5,3 +5,5 @@
 .settings/org.eclipse.jdt.core.prefs
 
 .class
+*.class
+
