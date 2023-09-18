@@ -126,4 +126,28 @@ public class MinVertexCoverTest {
 		assertEquals(6, minVertexCover.findMinimumVertexCover(edges, required, not_required));
 		System.out.println(required);
 	}
+
+	// below 2 are failing tests for different decision-points during dry-run of
+	// graph
+	//correct one = [16, 12, 10, 2, 13, 8, 4, 3, 9] 
+	@Test
+	@Order(7)
+	public void testCase7() {
+		edges = new int[][] { { 1, 4 }, { 1, 3 }, { 2, 5 }, { 2, 6 }, { 7, 3 }, { 5, 4 }, { 4, 8 }, { 9, 5 }, { 6, 10 },
+				{ 8, 7 }, { 12, 7 }, { 11, 8 }, { 11, 9 }, { 9, 10 }, { 14, 10 }, { 11, 13 }, { 12, 13 }, { 13, 14 },
+				{ 12, 15 }, { 14, 16 }, { 15, 16 } };
+		assertEquals(9, minVertexCover.findMinimumVertexCover(edges, required, not_required));
+		System.out.println(required);
+	}
+
+	@Test
+	@Order(8)
+	// this also might also give [3,5,6,8,2] whereas correct is only [2,6,8,4]
+	public void testCase8() {
+		edges = new int[][] { { 1, 2 }, { 1, 8 }, { 2, 3 }, { 3, 4 }, { 7, 8 }, { 2, 6 }, { 4, 5 }, { 7, 6 },
+				{ 6, 5 } };
+		assertEquals(4, minVertexCover.findMinimumVertexCover(edges, required, not_required));
+		System.out.println(required);
+	}
+
 }

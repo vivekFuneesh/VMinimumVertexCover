@@ -95,4 +95,15 @@ public class MinVertexCover2Test {
 		System.out.println(required);
 	}
 
+	// below might also fail.. as correct is [11,9,2,7,6,4,12] but this might also
+	// give 8 nodes as [13,1,8,11,9,6,4,3]
+	@Test
+	@Order(7)
+	public void testCase7() {
+		edges = new int[][] { { 1, 2 }, { 1, 11 }, { 3, 4 }, { 4, 5 }, { 3, 7 }, { 5, 6 }, { 2, 13 }, { 7, 13 },
+				{ 13, 12 }, { 6, 7 }, { 6, 8 }, { 11, 12 }, { 12, 8 }, { 11, 10 }, { 8, 9 }, { 9, 10 } };
+		assertEquals(7, minVertexCover.findMinimumVertexCover(edges, required, not_required));
+		System.out.println(required);
+	}
+
 }

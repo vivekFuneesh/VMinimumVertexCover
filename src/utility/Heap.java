@@ -98,7 +98,7 @@ public class Heap {
 	}
 
 	public void downHeapify(int pos) {
-		if (pos > (size / 2))
+		if (pos * 2 > (size))
 			return;
 
 		if (compareWithChild(Heap.get(pos).data.degree, Heap.get(leftChild(pos)).data.degree) || (pos * 2 + 1 <= size
@@ -117,7 +117,7 @@ public class Heap {
 
 	public void downHeapify(CommonNode node) {
 		int pos = trackIndex.get(node);
-		if (pos > (size / 2))
+		if (pos * 2 > (size))
 			return;
 
 		if (compareWithChild(Heap.get(pos).data.degree, Heap.get(leftChild(pos)).data.degree) || (pos * 2 + 1 <= size
@@ -219,7 +219,7 @@ public class Heap {
 	}
 
 	public void heapify() {
-		for (int i = size; i >= 1; i--) {
+		for (int i = 1 + size / 2; i >= 1; i--) {
 			downHeapify(i);
 		}
 	}
