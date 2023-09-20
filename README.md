@@ -165,3 +165,24 @@ This can also be seen as -:-
     lowest degree nodes.    
     And this graph state selection is done by choosing only one node to be removed.    
     
+
+
+Apart from above solution, one extended class 5 (variation 5) solution (which should also work for 4th dimensional graph) is -:-    
+    
+    When variation 4 has multiple candidate nodes, s.t. Ci, Cj and Ck    
+    have same set of degree string (N1M1xN2M2xN3M3..xNtMt),    
+    where x is the separator, N1 is the lowest degree, N2 is the 2nd lowest degree,..    
+    Nt is the t-th lowest degree of total t neighbours of and C and    
+    M1, M2.. Mt is the number of such connected-degree nodes for those    
+    candidates then    
+
+         Select that candidate which is not directly connected to any    
+	 of the other candidate nodes.    
+  
+	 That final selected node might contribute to 4th dimension    
+         because that is the disjoint candidate from other candidates    
+	 and can be treated as external perspective for which all other    
+         joint-nodes are same.. just like how 2D plane is same from 3rd    
+	 dimensional eye.    
+
+This class 5 is the final solution that this author @vivek can give us as of now for this minimum vertex cover game.
