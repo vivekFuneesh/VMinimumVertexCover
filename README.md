@@ -1,4 +1,4 @@
-# VMinimumVertexCover [DRAFTED-VERSION] [TESTING-ONGOING]
+# VMinimumVertexCover [DRAFTED-VERSION]  
 #                              Copyright (C) 2023 Vivek Mangla
  To solve minimum vertex cover problem in minimal time complexity
  
@@ -167,7 +167,7 @@ This can also be seen as -:-
     
 
 
-Apart from above solution, one extended class 5 (variation 5) solution (which should also work for 4th dimensional graph) is -:-    
+Apart from above solution, one extended class 5 (variation 5) solution is -:-    
     
     When variation 4 has multiple candidate nodes, s.t. Ci, Cj and Ck    
     have same set of degree string (N1M1xN2M2xN3M3..xNtMt),    
@@ -185,4 +185,9 @@ Apart from above solution, one extended class 5 (variation 5) solution (which sh
          joint-nodes are same.. just like how 2D plane is same from 3rd    
 	 dimensional eye.    
 
-This class 5 is the final solution that this author @vivek can give us as of now for this minimum vertex cover game.
+This class 5 is the final solution that this author @vivek can give as of now for this minimum vertex cover game.
+
+Final Update: after testing, var3, var4, var5 .. all algorithms FAIL for DIMACS and BHOSLIB graphs.. these were tested on few of them like test-cases number 20 and 22.    
+    
+Here FAIL means that they are giving slightly more (by 5-6) number of minimum-vertex-cover-set than the one cited on website of DIMACS and BHOSLIB.
+
