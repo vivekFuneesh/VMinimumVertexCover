@@ -17,7 +17,9 @@
        Contact me at vivek.funeesh@gmail.com for queries
 
 
-Time Complexity for both variations of algorithm:    
+# So far whatever progress been made is till var4 and 5 is there in implementation of var3 (var5 is commented) and for further progress and research, visualisation can be done to check exact properties of graph nodes that are being selected at a particular point. But this will take much more time & efforts, so pausing it's development any further.
+
+Time Complexity for variation1 of algorithm:    
     
        Best Case : O(nlogn), where n is no. of vertices    
        Worst Case : O(n^2 logn)    
@@ -31,10 +33,10 @@ Time Complexity for both variations of algorithm:
     
 For variation2 :    
     
-    worst case time is Sum(x log x + c log x), for x = [V, 1] and c <= x at any time;
- 			  = O (1/2 * V^2 log V - 1/4 * V^2 + V ) = O ((V^2)*(log V))
- 			  = O ( (V^2) * (log V) ) 
-    Best Case = O (V log V)    
+    worst case time is V* Sum(x log x + c log x), for x = [V, 1] and c <= x at any time;
+ 			  = V* O (1/2 * V^2 log V - 1/4 * V^2 + V ) = O ((V^2)*(log V))
+ 			  = O ( (V^3) * (log V) ) 
+    Best Case = O (V^2 log V)    
 
 
 Algo for variation 1:    
