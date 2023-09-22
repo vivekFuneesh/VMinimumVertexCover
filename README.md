@@ -17,7 +17,9 @@
        Contact me at vivek.funeesh@gmail.com for queries
 
 
-# So far whatever progress been made is till var4 and 5 is there in implementation of var3 (var5 is commented) and for further progress and research, visualisation can be done to check exact properties of graph nodes that are being selected at a particular point. But this will take much more time & efforts, so pausing it's development any further.
+# So far whatever progress been made till var4 and 5 is there in implementation of var3 (var5 is commented) and for further progress and research, visualisation can be done to check exact properties of graph nodes that are being selected at a particular point. But this will take much more time & efforts, so pausing it's development any further.    
+
+# Result of var4 is giving 4/5 extra nodes for hardest graph examples of DIMACS and BHOSLIB
 
 Time Complexity for variation1 of algorithm:    
     
