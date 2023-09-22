@@ -16,6 +16,37 @@ public class EdgesMatrixToList {
 	public static void main(String[] arg) throws IOException {
 		readEdgesFromFile("test-cases\\test-case-20-witzel-Graph.txt");
 	}
+	
+	public static TestEdgeNodeFromFileMatrix readEdgesFromListFile(String fileName) throws IOException {
+		File file = new File(fileName);
+
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+
+		String line = "";
+		
+		List<Integer[]> list = new ArrayList<>();
+		Integer[] temp = null;
+		while (reader.ready() ) {
+			
+			line = reader.readLine().trim();
+			if(line.length()==0) {continue;}
+			
+			temp = Arrays.stream(line.split(" ")).map(str -> str.trim())
+					.filter(str -> str.length() != 0).map(str -> Integer.valueOf(str)).toArray(Integer[]::new);
+
+			list.add(temp);
+		}
+
+		int[][] edges = list.stream().map(arr -> Stream.of(arr).mapToInt(x -> x).toArray())
+				.toArray(size -> new int[size][2]);
+
+		reader.close();
+
+		TestEdgeNodeFromFileMatrix node = new TestEdgeNodeFromFileMatrix(edges, edges.length, edges.length);
+
+		return node;
+		
+	}
 
 	public static TestEdgeNodeFromFileMatrix readEdgesFromFile(String fileName) throws IOException {
 		File file = new File(fileName);

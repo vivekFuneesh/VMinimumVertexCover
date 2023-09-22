@@ -23,10 +23,12 @@
 package utility;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import models.CommonNode;
 import models.HeapNode;
@@ -36,6 +38,8 @@ public class Heap {
 	private List<HeapNode> Heap; // having 1 more element at 0th index
 	private int size; // actual size
 	private boolean isMax = false;
+	
+	private Comparator<CommonNode> compare;
 
 	// to track
 	public Map<CommonNode, Integer> trackIndex;
@@ -46,6 +50,20 @@ public class Heap {
 		Heap = new ArrayList<>();
 		Heap.add(new HeapNode(node));
 		trackIndex = new HashMap<>();
+		
+		compare = (a,b)->a.degree-b.degree;
+	}
+
+	public Heap(CommonNode node, Comparator<CommonNode> compare) {
+		isMax = false;
+		this.size = 0;
+		Heap = new ArrayList<>();
+		Heap.add(new HeapNode(node));
+		trackIndex = new HashMap<>();
+		
+		Objects.requireNonNull(compare);
+		
+		this.compare = compare;
 	}
 
 	public Heap(CommonNode node, boolean isMax) {
@@ -54,6 +72,12 @@ public class Heap {
 		Heap = new ArrayList<>();
 		Heap.add(new HeapNode(node));
 		trackIndex = new HashMap<>();
+		
+		if(isMax) {
+			compare = (a,b)->b.degree-a.degree;
+		} else {
+			compare = (a,b)->a.degree-b.degree;
+		}
 	}
 
 	public int getSize() {
@@ -83,29 +107,43 @@ public class Heap {
 		trackIndex.put(Heap.get(spos).data, Heap.get(spos).index);
 	}
 
-	private boolean compareWithChild(int posValue, int childValue) {
-		if (isMax) {
-			return posValue < childValue;
-		}
-		return posValue > childValue;
+	private boolean compareWithChild(HeapNode posNode, HeapNode childNode) {
+		
+		int result = compare.compare(posNode.data, childNode.data);
+		
+		return result > 0;
+		
+//		int posValue = posNode.data.degree, childValue = childNode.data.degree;
+//		
+//		if (isMax) {
+//			return posValue < childValue;
+//		}
+//		return posValue > childValue;
 	}
 
-	private boolean compareWithParent(int posValue, int parentValue) {
-		if (isMax) {
-			return posValue > parentValue;
-		}
-		return posValue < parentValue;
+	private boolean compareWithParent(HeapNode posNode, HeapNode parentNode) {
+		
+		int result = compare.compare(posNode.data, parentNode.data);
+		
+		return result < 0;
+		
+//		int posValue = posNode.data.degree, parentValue = parentNode.data.degree;
+//		
+//		if (isMax) {
+//			return posValue > parentValue;
+//		}
+//		return posValue < parentValue;
 	}
 
 	public void downHeapify(int pos) {
 		if (pos * 2 > (size))
 			return;
 
-		if (compareWithChild(Heap.get(pos).data.degree, Heap.get(leftChild(pos)).data.degree) || (pos * 2 + 1 <= size
-				&& compareWithChild(Heap.get(pos).data.degree, Heap.get(rightChild(pos)).data.degree))) {
+		if (compareWithChild(Heap.get(pos), Heap.get(leftChild(pos))) || (pos * 2 + 1 <= size
+				&& compareWithChild(Heap.get(pos), Heap.get(rightChild(pos))))) {
 
 			if (pos * 2 + 1 <= size
-					&& compareWithChild(Heap.get(leftChild(pos)).data.degree, Heap.get(rightChild(pos)).data.degree)) {
+					&& compareWithChild(Heap.get(leftChild(pos)), Heap.get(rightChild(pos)))) {
 				swap(pos, rightChild(pos));
 				downHeapify(rightChild(pos));
 			} else {
@@ -120,11 +158,11 @@ public class Heap {
 		if (pos * 2 > (size))
 			return;
 
-		if (compareWithChild(Heap.get(pos).data.degree, Heap.get(leftChild(pos)).data.degree) || (pos * 2 + 1 <= size
-				&& compareWithChild(Heap.get(pos).data.degree, Heap.get(rightChild(pos)).data.degree))) {
+		if (compareWithChild(Heap.get(pos), Heap.get(leftChild(pos))) || (pos * 2 + 1 <= size
+				&& compareWithChild(Heap.get(pos), Heap.get(rightChild(pos))))) {
 
 			if (pos * 2 + 1 <= size
-					&& compareWithChild(Heap.get(leftChild(pos)).data.degree, Heap.get(rightChild(pos)).data.degree)) {
+					&& compareWithChild(Heap.get(leftChild(pos)), Heap.get(rightChild(pos)))) {
 				swap(pos, rightChild(pos));
 				downHeapify(rightChild(pos));
 			} else {
@@ -137,7 +175,7 @@ public class Heap {
 	public void heapifyUp(int pos) {
 		HeapNode temp = Heap.get(pos);
 
-		while (pos > 0 && parent(pos) > 0 && compareWithParent(temp.data.degree, Heap.get(parent(pos)).data.degree)) {
+		while (pos > 0 && parent(pos) > 0 && compareWithParent(temp, Heap.get(parent(pos)))) {
 			Heap.set(pos, Heap.get(parent(pos)));
 			Heap.get(pos).index = pos;
 			trackIndex.put(Heap.get(pos).data, pos);
@@ -152,7 +190,7 @@ public class Heap {
 		int pos = trackIndex.get(element);
 		HeapNode temp = Heap.get(pos);
 
-		while (pos > 0 && parent(pos) > 0 && compareWithParent(temp.data.degree, Heap.get(parent(pos)).data.degree)) {
+		while (pos > 0 && parent(pos) > 0 && compareWithParent(temp, Heap.get(parent(pos)))) {
 			Heap.set(pos, Heap.get(parent(pos)));
 			Heap.get(pos).index = pos;
 			trackIndex.put(Heap.get(pos).data, pos);

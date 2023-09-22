@@ -64,28 +64,26 @@ public class MinVertexCover {
 		return res;
 	}
 
-	List<Integer> tryMinify(List<Integer> required, int[][] edges) {
-
-		Set<Integer> set = new HashSet<Integer>(required);
-
-		return required.stream().filter(vertex -> isMandate(vertex.intValue(), edges, set))
-				.collect(Collectors.toList());
-	}
-
-	boolean isMandate(int vertex, int[][] edges, Set<Integer> set) {
-
-		set.remove(vertex);
-
-		for (int i = 0; i < edges.length; i++) {
-			if (!(set.contains(edges[i][0]) || set.contains(edges[i][1]))) {
-				set.add(vertex);
-				return true;
-			}
-		}
-
-		return false;
-	}
-
+	/*
+	 * List<Integer> tryMinify(List<Integer> required, int[][] edges) {
+	 * 
+	 * Set<Integer> set = new HashSet<Integer>(required);
+	 * 
+	 * return required.stream().filter(vertex -> isMandate(vertex.intValue(), edges,
+	 * set)) .collect(Collectors.toList()); }
+	 * 
+	 * boolean isMandate(int vertex, int[][] edges, Set<Integer> set) {
+	 * 
+	 * set.remove(vertex);
+	 * 
+	 * for (int i = 0; i < edges.length; i++) { if (!(set.contains(edges[i][0]) ||
+	 * set.contains(edges[i][1]))) { set.add(vertex); return true; } }
+	 * 
+	 * return false; }
+	 * 
+	 * 
+	 */
+	
 	Map<Integer, NodeForVersion1> createGraph(int[][] edges) {
 
 		Map<Integer, NodeForVersion1> graph = new HashMap<>();
