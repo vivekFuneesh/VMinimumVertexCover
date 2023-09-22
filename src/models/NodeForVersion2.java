@@ -44,12 +44,6 @@ public class NodeForVersion2 extends CommonNode {
 		this.degree = deg;
 	}
 
-	public static NodeForVersion2 instantiateWithDegree(int value, int degree) {
-		NodeForVersion2 node = new NodeForVersion2(value);
-		node.degree = degree;
-		return node;
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		// System.out.println("checking for"+ this.value +" == "+
