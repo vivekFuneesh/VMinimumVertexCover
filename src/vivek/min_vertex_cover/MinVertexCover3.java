@@ -1,6 +1,5 @@
 package vivek.min_vertex_cover;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,7 +12,6 @@ import models.NodeForVersion3;
 import utility.Heap;
 
 public class MinVertexCover3 {
-
 
 	Map<Integer, NodeForVersion3> createGraph(int[][] edges) {
 
@@ -39,18 +37,18 @@ public class MinVertexCover3 {
 
 				temp1.connected.add(temp2);
 				temp2.connected.add(temp1);
-			
+
 				graph.put(edges[i][0], temp1);
 				graph.put(edges[i][1], temp2);
 			}
 		}
-		
-		 //System.out.println("Adjacency List="+ graph);
+
+		// System.out.println("Adjacency List="+ graph);
 		return graph;
 	}
-	
+
 	Comparator<CommonNode> comp;
-	
+
 	public int findMinimumVertexCover(int[][] edges, List<Integer> required, List<Integer> not_required) {
 
 		if (edges == null || edges.length == 0)
@@ -62,78 +60,82 @@ public class MinVertexCover3 {
 
 		int res = 0;
 
-		comp =  (a,b)-> {
-			if(a.degree == 0)return -1;
-			if(b.degree == 0)return 1;
+		comp = (a, b) -> {
+			if (a.degree == 0)
+				return -1;
+			if (b.degree == 0)
+				return 1;
 
-			NodeForVersion3 n1 = (NodeForVersion3)a, n2 = (NodeForVersion3)b;
+			NodeForVersion3 n1 = (NodeForVersion3) a, n2 = (NodeForVersion3) b;
 
-			int lowChild1=n1.connected.stream().sorted((x,y)->x.degree-y.degree)
-					.findFirst().get().degree, 
-					lowChild2=n2.connected.stream().sorted((x,y)->x.degree-y.degree)
-					.findFirst().get().degree;
-			
+			int lowChild1 = n1.connected.stream().sorted((x, y) -> x.degree - y.degree).findFirst().get().degree,
+					lowChild2 = n2.connected.stream().sorted((x, y) -> x.degree - y.degree).findFirst().get().degree;
+
 //			return lowChild1-lowChild2;
-			
+
 //System.out.println("----");
-				n1.comparisonData = n1.connected.stream()
-						//.peek(x->{System.out.print(x.getKey()+"-"+x.getValue()+" ");})
-						.collect(Collectors.groupingBy(x->x.degree, Collectors.counting()))
-						.entrySet().stream()
-						.sorted((x,y)->x.getKey()-y.getKey())
-						.map(entry->new int[] {entry.getKey(),entry.getValue().intValue()})
-						.toArray(size->new int[size][2]);
+			n1.comparisonData = n1.connected.stream()
+					// .peek(x->{System.out.print(x.getKey()+"-"+x.getValue()+" ");})
+					.collect(Collectors.groupingBy(x -> x.degree, Collectors.counting())).entrySet().stream()
+					.sorted((x, y) -> x.getKey() - y.getKey())
+					.map(entry -> new int[] { entry.getKey(), entry.getValue().intValue() })
+					.toArray(size -> new int[size][2]);
 
+			n2.comparisonData = n2.connected.stream()
+					.collect(Collectors.groupingBy(x -> x.degree, Collectors.counting())).entrySet().stream()
+					.sorted((x, y) -> x.getKey() - y.getKey())
+					.map(entry -> new int[] { entry.getKey(), entry.getValue().intValue() })
+					.toArray(size -> new int[size][2]);
 
-				n2.comparisonData = n2.connected.stream()
-						.collect(Collectors.groupingBy(x->x.degree, Collectors.counting()))
-						.entrySet().stream()
-						.sorted((x,y)->x.getKey()-y.getKey())
-						.map(entry->new int[] {entry.getKey(),entry.getValue().intValue()})
-						.toArray(size->new int[size][2]);
-
-			if(n1.comparisonData[0][0]!=lowChild1 || n2.comparisonData[0][0]!=lowChild2) {
+			if (n1.comparisonData[0][0] != lowChild1 || n2.comparisonData[0][0] != lowChild2) {
 				System.out.println("SORTING AMBIGUITY");
 				System.exit(1);
 			}
-			
-			int i=0, j=0;
-			
+
+			int i = 0, j = 0;
+
 			/**
 			 * 1st = few cases to check later: if 'a' = 1*5-2*3-3*5 : 'b' = 1*4-2*3-3*5-4*10
-			 * then currently selecting 'a' because 'a' will lead to more number of "lowest" degree children.
+			 * then currently selecting 'a' because 'a' will lead to more number of "lowest"
+			 * degree children.
 			 * 
-			 * 2nd = but 'b' can be selected on the ground that 'b' has more number of total degrees along with all available
-			 * "lowest" degree nodes in one or more quantity.
+			 * 2nd = but 'b' can be selected on the ground that 'b' has more number of total
+			 * degrees along with all available "lowest" degree nodes in one or more
+			 * quantity.
 			 * 
-			 * this 2nd decision can be taken as separate variation, named as " var3` " i.e. var-3-bar , where bar represents
-			 * alternate optional strategy and minimum among them can be selected.
+			 * this 2nd decision can be taken as separate variation, named as " var3` " i.e.
+			 * var-3-bar , where bar represents alternate optional strategy and minimum
+			 * among them can be selected.
 			 * 
-			 * Then final answer can be Minimum ( var3-solution , var3`-solution ) 
+			 * Then final answer can be Minimum ( var3-solution , var3`-solution )
 			 * 
-			 * :- Note: this is not taken at every 
-			 * loop rather this is completely a separate variation/class-algorithm so final answer to be 
-			 * Minimum { set-calculated-by-var3, set-calculated-by-var3`}
+			 * :- Note: this is not taken at every loop rather this is completely a separate
+			 * variation/class-algorithm so final answer to be Minimum {
+			 * set-calculated-by-var3, set-calculated-by-var3`}
 			 * 
-			 * my basic assumption, which is also the base of these variations, is that var3 should give minimum instead 
-			 * of var3-bar.
-			 * */
-			
-			//[i][0] is degree, [i][1] is quantity of that degree
-			while(i<n1.comparisonData.length && j <n2.comparisonData.length) {
-				if(n1.comparisonData[i][0] < n2.comparisonData[j][0]) {
+			 * my basic assumption, which is also the base of these variations, is that var3
+			 * should give minimum instead of var3-bar.
+			 */
+
+			// [i][0] is degree, [i][1] is quantity of that degree
+			while (i < n1.comparisonData.length && j < n2.comparisonData.length) {
+				if (n1.comparisonData[i][0] < n2.comparisonData[j][0]) {
 					return -1;
-				} else if(n1.comparisonData[i][0] > n2.comparisonData[j][0]) {
+				} else if (n1.comparisonData[i][0] > n2.comparisonData[j][0]) {
 					return 1;
-				} else { 
-					if(n1.comparisonData[i][1] > n2.comparisonData[j][1]) return -1; 
-					else if(n1.comparisonData[i][1] < n2.comparisonData[i][1]) return 1; 
-					else {} 
+				} else {
+					if (n1.comparisonData[i][1] > n2.comparisonData[j][1])
+						return -1;
+					else if (n1.comparisonData[i][1] < n2.comparisonData[i][1])
+						return 1;
+					else {
+					}
 				}
-					 
-				i++; j++;
+
+				i++;
+				j++;
 			}
-			
+
 //			if both nodes have same connected ones 
 //			then select one having maximum neighbors otherwise select any
 //			if((i==j && n1.connected.size()!=n2.connected.size() ) || 
@@ -156,12 +158,11 @@ public class MinVertexCover3 {
 //			if(i==n1.comparisonData.length)return 1;	//n2 has more, so should be at top
 //			else if(j==n2.comparisonData.length)return -1; //n1 has more, so should be at top
 //			
-			return -n1.connected.size()+n2.connected.size();
-
+			return -n1.connected.size() + n2.connected.size();
 
 		};
-		
-		Heap queue = new Heap(new NodeForVersion3(-1),comp);
+
+		Heap queue = new Heap(new NodeForVersion3(-1), comp);
 
 		graph.values().stream().forEach(value -> {
 			queue.add(value);
@@ -173,14 +174,14 @@ public class MinVertexCover3 {
 
 	}
 
-	//O(log V * V^3) in worst case
+	// O( (log V) * (V^3) ) in worst case
 	private int processQueue(Heap queue, List<Integer> required, List<Integer> not_required) {
 		int res = 0;
-		
-		while(!queue.isEmpty()) {
-			NodeForVersion3 node = (NodeForVersion3)queue.peek();
-			
-			if(node.degree==0) {
+
+		while (!queue.isEmpty()) { // V times
+			NodeForVersion3 node = (NodeForVersion3) queue.peek();
+
+			if (node.degree == 0) {
 				queue.remove(node);
 				not_required.add(node.value);
 				queue.heapify();
@@ -216,35 +217,34 @@ public class MinVertexCover3 {
 //				
 //								
 				queue.remove(node); // (V-1) * O(log V) in worst case
-				
-				//O(V) in worst case
-				Iterator<NodeForVersion3>itr =  node.connected.iterator();
-				
-				while(itr.hasNext()){
-					
+
+				// O(V) in worst case
+				Iterator<NodeForVersion3> itr = node.connected.iterator();
+
+				while (itr.hasNext()) { // V * V log V
+
 					NodeForVersion3 cN = itr.next();
 					cN.connected.remove(node);
-					
-					//instead of directly heapifying, in all previous variations and current one- 
-					//first remove and then add.
-					cN.degree--;					
+
+					// instead of directly heapifying, in all previous variations and current one-
+					// first remove and then add.
+					cN.degree--;
 				}
-				
+
 				required.add(node.value);
 				res++;
-				
+
 				node.connected.clear();
-				node.degree=0;
-				node.comparisonData=null;
+				node.degree = 0;
+				node.comparisonData = null;
 				node.connectedMap.clear();
-				
-				queue.heapify(); // V * O(V) in worst case 
+
+				queue.heapify(); // V times[ V Log V for sorting + V for comparison b/w any 2 nodes ] = (log V) *
+									// (V^2)
 			}
 		}
-		
+
 		return res;
 	}
-
-
 
 }

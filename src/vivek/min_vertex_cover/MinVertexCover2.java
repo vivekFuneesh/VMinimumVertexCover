@@ -83,13 +83,12 @@ public class MinVertexCover2 {
 			value.track.clear();
 			queue.add(value);
 		});
-		
+
 		/**
-		 * a node may have increment in degree after it has been added to connected heap of previous node.
-		 * so heapify() is required for connected-heaps of 
-		 * nodes.
-		 * */
-		
+		 * a node may have increment in degree after it has been added to connected heap
+		 * of previous node. so heapify() is required for connected-heaps of nodes.
+		 */
+
 		queue.iterator().forEachRemaining(node -> {
 			((NodeForVersion2) node.data).connected.heapify();
 		});
@@ -151,7 +150,7 @@ public class MinVertexCover2 {
 					/**
 					 * below step will make connected heap as non-max-heap of all those nodes which
 					 * have connectedNode as member in upcoming iterations, heapify() call will
-					 * handle that inside findNodeToPeek(). 
+					 * handle that inside findNodeToPeek().
 					 */
 					connectedNode.degree--;
 
@@ -163,7 +162,7 @@ public class MinVertexCover2 {
 
 					Iterator<HeapNode> connectedNodeItr = connectedNode.connected.iterator();
 					// System.out.println("Before- "+connectedNode);
-					
+
 					// System.out.println("After- "+connectedNode);
 				}
 
@@ -191,28 +190,27 @@ public class MinVertexCover2 {
 	// == V * O( (Ci) (Log Vi) ) in worst case. Ci can be Vi in worst case
 
 	NodeForVersion2 findNodeToPeek(Heap queue) { // number of neighbours
-		
+
 		NodeForVersion2 node = (NodeForVersion2) queue.poll();
 
 		List<NodeForVersion2> list = new ArrayList<NodeForVersion2>();
 
-		 node.connected.heapify();//added overhead of O(V~j), where V~ is the no. of
+		node.connected.heapify();// added overhead of O(V~j), where V~ is the no. of
 		// connected nodes of jth node
 		checkForOtherMax(node); // though not required but still doing
 
 		list.add(node);
 		// System.out.print("candidate nodes= "+node.value+" ");
 
-		
 		NodeForVersion2 tmp = node, p1 = null, tmp2 = node;
-		
+
 		while (!queue.isEmpty() && node.degree == queue.peek().degree) {
 			p1 = (NodeForVersion2) queue.poll(); // log (no. of remaining Vertices in main queue)
-			
+
 			p1.connected.heapify();
-			
-			//commenting this giving 424 instead of 425 for external test-case-20
-			
+
+			// commenting this giving 424 instead of 425 for external test-case-20
+
 			checkForOtherMax(p1);
 
 			list.add(p1);

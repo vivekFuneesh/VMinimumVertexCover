@@ -13,7 +13,6 @@ import vivek.min_vertex_cover.MinVertexCover3;
 
 public class MinVertexCover3Test {
 
-
 	private MinVertexCover3 minVertexCover = null;
 	private int[][] edges = null;
 	private List<Integer> required = null, not_required = null;
@@ -31,7 +30,6 @@ public class MinVertexCover3Test {
 	public void testNullEdges() {
 		assertEquals(0, minVertexCover.findMinimumVertexCover(null, new ArrayList<>(), new ArrayList<>()));
 	}
-
 
 	@Test
 	@Order(2)
