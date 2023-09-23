@@ -23,14 +23,10 @@
 package vivek.min_vertex_cover;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-import models.HeapNode;
 import models.NodeForVersion1;
 import utility.Heap;
 
@@ -83,7 +79,7 @@ public class MinVertexCover {
 	 * 
 	 * 
 	 */
-	
+
 	Map<Integer, NodeForVersion1> createGraph(int[][] edges) {
 
 		Map<Integer, NodeForVersion1> graph = new HashMap<>();

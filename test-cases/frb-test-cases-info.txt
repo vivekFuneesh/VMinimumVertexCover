@@ -1,0 +1,16 @@
+
+
+
+URL :: 
+http://vlsicad.eecs.umich.edu/BK/Slots/cache/www.nlsde.buaa.edu.cn/~kexu/benchmarks/graph-benchmarks.htm 
+ 
+ I am assuming that frb*-*-mis.tar.gz and frb*-*-cnf.tar.gz have same data-sets and instances
+  
+frb30-15-mis.tar.gz (  205 KB):   450 vertices (30 cliques) - 5 instances, with the size of the MIS = 30 and the size of the MVC =   420
+frb35-17-mis.tar.gz (  319 KB):   595 vertices (35 cliques) - 5 instances, with the size of the MIS = 35 and the size of the MVC =   560
+frb40-19-mis.tar.gz (  470 KB):   760 vertices (40 cliques) - 5 instances, with the size of the MIS = 40 and the size of the MVC =   720
+frb45-21-mis.tar.gz (  666 KB):   945 vertices (45 cliques) - 5 instances, with the size of the MIS = 45 and the size of the MVC =   900
+frb50-23-mis.tar.gz (  930 KB): 1150 vertices (50 cliques) - 5 instances, with the size of the MIS = 50 and the size of the MVC = 1100
+frb53-24-mis.tar.gz (1094 KB): 1272 vertices (53 cliques) - 5 instances, with the size of the MIS = 53 and the size of the MVC = 1219
+frb56-25-mis.tar.gz (1279 KB): 1400 vertices (56 cliques) - 5 instances, with the size of the MIS = 56 and the size of the MVC = 1344
+frb59-26-mis.tar.gz (1478 KB): 1534 vertices (59 cliques) - 5 instances, with the size of the MIS = 59 and the size of the MVC = 1475

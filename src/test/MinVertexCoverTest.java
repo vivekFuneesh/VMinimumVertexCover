@@ -129,7 +129,7 @@ public class MinVertexCoverTest {
 
 	// below 2 are failing tests for different decision-points during dry-run of
 	// graph
-	//correct one = [16, 12, 10, 2, 13, 8, 4, 3, 9] 
+	// correct one = [16, 12, 10, 2, 13, 8, 4, 3, 9]
 	@Test
 	@Order(7)
 	public void testCase7() {
