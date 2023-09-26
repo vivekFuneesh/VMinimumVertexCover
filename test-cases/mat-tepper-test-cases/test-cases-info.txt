@@ -1,0 +1,9 @@
+
+
+for brock-graphs.. 
+
+https://mat.tepper.cmu.edu/COLOR02/INSTANCES/
+
+for other instances 
+
+https://networkrepository.com/networks.php
