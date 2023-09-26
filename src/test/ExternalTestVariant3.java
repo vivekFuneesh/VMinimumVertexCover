@@ -558,4 +558,40 @@ public class ExternalTestVariant3 {
 				minVertexCover.findMinimumVertexCover(node.getEdges(), required, not_required));
 		System.out.println("not confirmed-- , required=" + required + " \n" + required.size());
 	}
+
+	@Test
+	@Order(43)
+	public void testCase43() throws IOException {
+
+		TestEdgeNodeFromFileMatrix node = EdgesMatrixToList
+				.readEdgesFromListFile("test-cases\\mat-tepper-test-cases\\brock200_2.txt");
+
+		assertEquals(node.getMinimumCoverSize(),
+				minVertexCover.findMinimumVertexCover(node.getEdges(), required, not_required));
+		System.out.println("not confirmed-- , required=" + required + " \n" + required.size());
+	}
+
+	@Test
+	@Order(44)
+	public void testCase44() throws IOException {
+
+		TestEdgeNodeFromFileMatrix node = EdgesMatrixToList
+				.readEdgesFromListFile("test-cases\\mat-tepper-test-cases\\brock800_2.txt");
+
+		assertEquals(node.getMinimumCoverSize(),
+				minVertexCover.findMinimumVertexCover(node.getEdges(), required, not_required));
+		System.out.println("not confirmed-- , required=" + required + " \n" + required.size());
+	}
+
+	@Test
+	@Order(45)
+	public void testCase45() throws IOException {
+
+		TestEdgeNodeFromFileMatrix node = EdgesMatrixToList
+				.readEdgesFromListFile("test-cases\\mat-tepper-test-cases\\johnson8-2-4.txt");
+
+		assertEquals(node.getMinimumCoverSize(),
+				minVertexCover.findMinimumVertexCover(node.getEdges(), required, not_required));
+		System.out.println("not confirmed-- , required=" + required + " \n" + required.size());
+	}
 }
