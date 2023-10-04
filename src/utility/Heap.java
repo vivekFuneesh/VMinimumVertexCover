@@ -138,7 +138,7 @@ public class Heap {
 	public void downHeapify(int pos) {
 		if (pos * 2 > (size))
 			return;
-		
+
 		if (compareWithChild(Heap.get(pos), Heap.get(leftChild(pos)))
 				|| (pos * 2 + 1 <= size && compareWithChild(Heap.get(pos), Heap.get(rightChild(pos))))) {
 
@@ -232,7 +232,7 @@ public class Heap {
 		// System.out.println("after push, heap= "+Heap);
 
 	}
-	
+
 	public void remove(CommonNode element) {
 
 		if (size == 0)
@@ -245,7 +245,7 @@ public class Heap {
 		size--;
 		downHeapify(ind);
 	}
-	
+
 	public void removeWithoutHeapify(CommonNode element) {
 
 		if (size == 0)
@@ -256,7 +256,7 @@ public class Heap {
 		Heap.remove(size);
 		trackIndex.remove(element);
 		size--;
-		
+
 	}
 
 	public CommonNode poll() {

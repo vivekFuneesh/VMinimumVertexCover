@@ -15,7 +15,7 @@ public class NodeForVersion3 extends CommonNode {
 
 	// degree - Number of such connected Nodes
 	public Map<Integer, Integer> connectedMap = new HashMap<>();
-	
+
 	public Heap connected = null;
 
 	/**
@@ -28,10 +28,10 @@ public class NodeForVersion3 extends CommonNode {
 		this.value = v;
 		this.track = new HashSet<>();
 	}
-	
+
 	public NodeForVersion3(int v, int d, Comparator<CommonNode> comp) {
-		this.value=v;
-		this.degree=d;
+		this.value = v;
+		this.degree = d;
 		this.connected = new Heap(new NodeForVersion3(-1), comp);
 	}
 
@@ -42,8 +42,7 @@ public class NodeForVersion3 extends CommonNode {
 
 	@Override
 	public String toString() {
-		return this.value + "=" + connected.getInternalHeap().stream()
-				.map(x -> x.data.value + "." + x.data.degree)
+		return this.value + "=" + connected.getInternalHeap().stream().map(x -> x.data.value + "." + x.data.degree)
 				.collect(Collectors.toList());
 	}
 

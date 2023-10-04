@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class NodeForVersion6 extends CommonNode{
+public class NodeForVersion6 extends CommonNode {
 	public Set<NodeForVersion6> connected = new HashSet<>();
 
 	// degree - Number of such connected Nodes

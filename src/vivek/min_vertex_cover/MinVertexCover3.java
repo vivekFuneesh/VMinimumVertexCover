@@ -15,52 +15,41 @@ import utility.Heap;
 
 public class MinVertexCover3 {
 
-	
 	Map<Integer, NodeForVersion3> createGraph(int[][] edges) {
-
-		
 
 		Comparator<CommonNode> comp = (a, b) -> {
 
 			if (a.degree == 0 && b.degree == 0) {
 				return 0;
 			}
-			
-			if (a.degree == 0 ) {
+
+			if (a.degree == 0) {
 				return -1;
 			}
-			
+
 			if (b.degree == 0) {
 				return 1;
 			}
 
 			NodeForVersion3 n1 = (NodeForVersion3) a, n2 = (NodeForVersion3) b;
 //System.out.println("for "+n1 +" "+ n1.degree+" \n and \n"+b);
-			int lowChild1 = n1.connected.getInternalHeap()
-					.stream().map(x->x.data)
-					.filter(x->x.value!=-1)
+			int lowChild1 = n1.connected.getInternalHeap().stream().map(x -> x.data).filter(x -> x.value != -1)
 					.sorted((x, y) -> x.degree - y.degree).findFirst().get().degree,
-					
-				lowChild2 = n2.connected.getInternalHeap()
-							.stream().map(x->x.data)
-							.filter(x->x.value!=-1)
+
+					lowChild2 = n2.connected.getInternalHeap().stream().map(x -> x.data).filter(x -> x.value != -1)
 							.sorted((x, y) -> x.degree - y.degree).findFirst().get().degree;
 
 //			return lowChild1-lowChild2;
 
 //System.out.println("----");
-			n1.comparisonData = n1.connected.getInternalHeap()
-					.stream().map(x->x.data)
-					.filter(x->x.value!=-1)
+			n1.comparisonData = n1.connected.getInternalHeap().stream().map(x -> x.data).filter(x -> x.value != -1)
 					// .peek(x->{System.out.print(x.getKey()+"-"+x.getValue()+" ");})
 					.collect(Collectors.groupingBy(x -> x.degree, Collectors.counting())).entrySet().stream()
 					.sorted((x, y) -> x.getKey() - y.getKey())
 					.map(entry -> new int[] { entry.getKey(), entry.getValue().intValue() })
 					.toArray(size -> new int[size][2]);
 
-			n2.comparisonData = n2.connected.getInternalHeap()
-					.stream().map(x->x.data)
-					.filter(x->x.value!=-1)
+			n2.comparisonData = n2.connected.getInternalHeap().stream().map(x -> x.data).filter(x -> x.value != -1)
 					.collect(Collectors.groupingBy(x -> x.degree, Collectors.counting())).entrySet().stream()
 					.sorted((x, y) -> x.getKey() - y.getKey())
 					.map(entry -> new int[] { entry.getKey(), entry.getValue().intValue() })
@@ -114,7 +103,7 @@ public class MinVertexCover3 {
 				i++;
 				j++;
 			}
-			
+
 //			if(-n1.connected.getSize() + n2.connected.getSize() == 0) {
 //				System.out.println("possible runner ups");
 //				
@@ -140,12 +129,11 @@ public class MinVertexCover3 {
 //						.collect(Collectors.toList()));
 //				
 //			}
-			
+
 			return -n1.connected.getSize() + n2.connected.getSize();
 
 		};
 
-		
 		Map<Integer, NodeForVersion3> graph = new HashMap<>();
 		NodeForVersion3 temp1 = null, temp2 = null;
 
@@ -166,13 +154,15 @@ public class MinVertexCover3 {
 
 				temp1.degree++;
 				temp2.degree++;
-				
-				if(temp1.connected==null)temp1.connected= new Heap(new NodeForVersion3(-1), comp);
-				if(temp2.connected==null)temp2.connected= new Heap(new NodeForVersion3(-1), comp);
-				
+
+				if (temp1.connected == null)
+					temp1.connected = new Heap(new NodeForVersion3(-1), comp);
+				if (temp2.connected == null)
+					temp2.connected = new Heap(new NodeForVersion3(-1), comp);
+
 				temp1.connected.addWithoutHeapify(temp2);
 				temp2.connected.addWithoutHeapify(temp1);
-				
+
 				temp1.track.add(temp2);
 				temp2.track.add(temp1);
 
@@ -180,14 +170,14 @@ public class MinVertexCover3 {
 				graph.put(edges[i][1], temp2);
 			}
 		}
-		
-		graph.entrySet().stream().forEach(entry->{entry.getValue().connected.heapify();});
-		
+
+		graph.entrySet().stream().forEach(entry -> {
+			entry.getValue().connected.heapify();
+		});
+
 		// System.out.println("Adjacency List="+ graph);
 		return graph;
 	}
-
-	
 
 	public int findMinimumVertexCover(int[][] edges, List<Integer> required, List<Integer> not_required) {
 
@@ -200,13 +190,13 @@ public class MinVertexCover3 {
 
 		int res = 0;
 
-		//sorting main queue on the basis of connected lowest degree child/neighbour
+		// sorting main queue on the basis of connected lowest degree child/neighbour
 		Comparator<CommonNode> comp = (a, b) -> {
-			
+
 			return a.degree - b.degree;
 		};
-		
-		Heap queue = new Heap(new NodeForVersion3(-1,0, comp), comp);
+
+		Heap queue = new Heap(new NodeForVersion3(-1, 0, comp), comp);
 
 		graph.values().stream().forEach(value -> {
 			queue.add(value);
@@ -228,12 +218,15 @@ public class MinVertexCover3 {
 			if (node.degree == 0) {
 				queue.remove(node);
 				not_required.add(node.value);
-				
+
 			} else {
-				
-				//find the minimum-degree-max-quantity-neighboured-parent among these lowest degree nodes
+
+				// find the minimum-degree-max-quantity-neighboured-parent among these lowest
+				// degree nodes
 				node = findNodeToPeek(queue);
 //				System.out.println("selected node = "+node+"\n queue="+queue);
+
+				// ----var5--start--
 //				CommonNode n = queue.peek(), t=null, res1=null;
 //				List<CommonNode> list  = new ArrayList<>();
 //				while(!queue.isEmpty() && comp.compare(n, queue.peek()) ==0) {
@@ -262,7 +255,7 @@ public class MinVertexCover3 {
 //				list.stream().forEach(x->{
 //					queue.add((NodeForVersion3)x);
 //				});
-//				
+//				//---var5--end--
 //								
 				queue.remove(node); // (V-1) * O(log V) in worst case
 
@@ -271,13 +264,13 @@ public class MinVertexCover3 {
 
 				while (itr.hasNext()) { // V * V log V
 
-					NodeForVersion3 cN = (NodeForVersion3)itr.next().data;
+					NodeForVersion3 cN = (NodeForVersion3) itr.next().data;
 					cN.connected.removeWithoutHeapify(node);
 
 					// instead of directly heapifying, in all previous variations and current one-
 					// first remove and then add.
 					cN.degree--;
-					
+
 					queue.heapifyUp(cN);
 				}
 
@@ -290,76 +283,68 @@ public class MinVertexCover3 {
 				node.connectedMap.clear();
 
 //				queue.heapify(); // V times[ V Log V for sorting + V for comparison b/w any 2 nodes ] = (log V) *
-									// (V^2)
+				// (V^2)
 			}
 		}
 
 		return res;
 	}
 
+	private NodeForVersion3 findNodeToPeek(Heap queue) {
 
+		NodeForVersion3 res = (NodeForVersion3) queue.poll(), temp = null, result = null;
 
-	private NodeForVersion3 findNodeToPeek(Heap queue) { 
-		
-		NodeForVersion3 res = (NodeForVersion3)queue.poll(), temp = null, result=null;
-		
 //		System.out.println("heapify = "+res);
 		res.connected.heapify();
 //		if(res.value==14)
 //			System.out.println("\n \n now candidate starts =14 \n ");
-		
+
 		List<NodeForVersion3> list = new ArrayList<>();
-		
+
 		list.add(res);
-		
-		result=(NodeForVersion3)res.connected.peek();
-		
-		while(!queue.isEmpty() && res.degree == queue.peek().degree) {
-			temp = (NodeForVersion3)queue.poll();
+
+		result = (NodeForVersion3) res.connected.peek();
+
+		while (!queue.isEmpty() && res.degree == queue.peek().degree) {
+			temp = (NodeForVersion3) queue.poll();
 			list.add(temp);
 //			System.out.println("heapify = "+temp);
 			temp.connected.heapify();
-			
+
 //			System.out.println("sending below's peeks for comparison "+ (NodeForVersion3)res+"\n"+(NodeForVersion3)temp);
-			result = findWithMinDegreeMaxQuantityNeighboured(result, 
-					(NodeForVersion3)temp.connected.peek());
-			
+			result = findWithMinDegreeMaxQuantityNeighboured(result, (NodeForVersion3) temp.connected.peek());
+
 //			if(res.value==14) {
 //				System.out.println("result = "+result);
 //			}
-			
+
 		}
 //		System.out.println("candidates = "+ list);
-		list.stream().forEach(x-> queue.add(x));
-		
+		list.stream().forEach(x -> queue.add(x));
+
 //		System.out.println(queue);
-	
+
 		return result;
 	}
-	
+
 	NodeForVersion3 findWithMinDegreeMaxQuantityNeighboured(NodeForVersion3 n1, NodeForVersion3 n2) {
-		
+
 //		if(n1.value == n2.value)
 //				System.out.println("received ones = "+ n1+"\n"+n2);
-		
-			n1.comparisonData = n1.connected.getInternalHeap()
-					.stream().map(x->x.data)
-					.filter(x->x.value!=-1)
-					// .peek(x->{System.out.print(x.getKey()+"-"+x.getValue()+" ");})
-					.collect(Collectors.groupingBy(x -> x.degree, Collectors.counting())).entrySet().stream()
-					.sorted((x, y) -> x.getKey() - y.getKey())
-					.map(entry -> new int[] { entry.getKey(), entry.getValue().intValue() })
-					.toArray(size -> new int[size][2]);
 
-			n2.comparisonData = n2.connected.getInternalHeap()
-					.stream().map(x->x.data)
-					.filter(x->x.value!=-1)
-					.collect(Collectors.groupingBy(x -> x.degree, Collectors.counting())).entrySet().stream()
-					.sorted((x, y) -> x.getKey() - y.getKey())
-					.map(entry -> new int[] { entry.getKey(), entry.getValue().intValue() })
-					.toArray(size -> new int[size][2]);
+		n1.comparisonData = n1.connected.getInternalHeap().stream().map(x -> x.data).filter(x -> x.value != -1)
+				// .peek(x->{System.out.print(x.getKey()+"-"+x.getValue()+" ");})
+				.collect(Collectors.groupingBy(x -> x.degree, Collectors.counting())).entrySet().stream()
+				.sorted((x, y) -> x.getKey() - y.getKey())
+				.map(entry -> new int[] { entry.getKey(), entry.getValue().intValue() })
+				.toArray(size -> new int[size][2]);
 
-		
+		n2.comparisonData = n2.connected.getInternalHeap().stream().map(x -> x.data).filter(x -> x.value != -1)
+				.collect(Collectors.groupingBy(x -> x.degree, Collectors.counting())).entrySet().stream()
+				.sorted((x, y) -> x.getKey() - y.getKey())
+				.map(entry -> new int[] { entry.getKey(), entry.getValue().intValue() })
+				.toArray(size -> new int[size][2]);
+
 //		if(n1.value==11 || n2.value==11) {
 //			System.out.println("compData for "+n1);
 //			for(int i=0;i<n1.comparisonData.length; i++) {
@@ -370,9 +355,9 @@ public class MinVertexCover3 {
 //				System.out.print(n2.comparisonData[i][0]+":"+n2.comparisonData[i][1]+" ");
 //			}
 //		}
-		
-		int i=0,j=0;
-		
+
+		int i = 0, j = 0;
+
 		while (i < n1.comparisonData.length && j < n2.comparisonData.length) {
 			if (n1.comparisonData[i][0] < n2.comparisonData[j][0]) {
 				return n1;
@@ -396,8 +381,8 @@ public class MinVertexCover3 {
 //			System.out.println(n1.value==n2.value);
 //			System.out.println(n1.value+" "+n2.value);
 //		}
-		
-		return -n1.connected.getSize() + n2.connected.getSize() <=0 ?n1 : n2;
+
+		return -n1.connected.getSize() + n2.connected.getSize() <= 0 ? n1 : n2;
 
 	}
 
