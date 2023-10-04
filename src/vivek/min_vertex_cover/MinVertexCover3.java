@@ -1,5 +1,6 @@
 package vivek.min_vertex_cover;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,80 +9,58 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import models.CommonNode;
+import models.HeapNode;
 import models.NodeForVersion3;
 import utility.Heap;
 
 public class MinVertexCover3 {
 
+	
 	Map<Integer, NodeForVersion3> createGraph(int[][] edges) {
 
-		Map<Integer, NodeForVersion3> graph = new HashMap<>();
-		NodeForVersion3 temp1 = null, temp2 = null;
+		
 
-		for (int i = 0; i < edges.length; i++) {
-			// System.out.println(edges[i][0]+" = "+graph.containsKey(edges[i][0])+" &"+
-			// edges[i][1]+" = "+
-			// graph.containsKey(edges[i][1]));
-			temp1 = graph.getOrDefault(edges[i][0], new NodeForVersion3(edges[i][0]));
-			temp2 = graph.getOrDefault(edges[i][1], new NodeForVersion3(edges[i][1]));
-			// System.out.println("for edge"+ edges[i][0]+" - "+ edges[i][1]);
-			// as in one step both edges are being considered, no need to check reverse edge
-			// separately
-			// for directed graph, reverse edge will be considered irrespective of they
-			// actually are or not
-			// because any one can come first irrespective of direction
-			if (!temp1.connected.contains(temp2)) {
+		Comparator<CommonNode> comp = (a, b) -> {
 
-				temp1.degree++;
-				temp2.degree++;
-
-				temp1.connected.add(temp2);
-				temp2.connected.add(temp1);
-
-				graph.put(edges[i][0], temp1);
-				graph.put(edges[i][1], temp2);
+			if (a.degree == 0 && b.degree == 0) {
+				return 0;
 			}
-		}
-
-		// System.out.println("Adjacency List="+ graph);
-		return graph;
-	}
-
-	Comparator<CommonNode> comp;
-
-	public int findMinimumVertexCover(int[][] edges, List<Integer> required, List<Integer> not_required) {
-
-		if (edges == null || edges.length == 0)
-			return 0;
-		if (edges.length == 1)
-			return 1;
-
-		Map<Integer, NodeForVersion3> graph = createGraph(edges);
-
-		int res = 0;
-
-		comp = (a, b) -> {
-			if (a.degree == 0)
+			
+			if (a.degree == 0 ) {
 				return -1;
-			if (b.degree == 0)
+			}
+			
+			if (b.degree == 0) {
 				return 1;
+			}
 
 			NodeForVersion3 n1 = (NodeForVersion3) a, n2 = (NodeForVersion3) b;
-
-			int lowChild1 = n1.connected.stream().sorted((x, y) -> x.degree - y.degree).findFirst().get().degree,
-					lowChild2 = n2.connected.stream().sorted((x, y) -> x.degree - y.degree).findFirst().get().degree;
+//System.out.println("for "+n1 +" "+ n1.degree+" \n and \n"+b);
+			int lowChild1 = n1.connected.getInternalHeap()
+					.stream().map(x->x.data)
+					.filter(x->x.value!=-1)
+					.sorted((x, y) -> x.degree - y.degree).findFirst().get().degree,
+					
+				lowChild2 = n2.connected.getInternalHeap()
+							.stream().map(x->x.data)
+							.filter(x->x.value!=-1)
+							.sorted((x, y) -> x.degree - y.degree).findFirst().get().degree;
 
 //			return lowChild1-lowChild2;
 
 //System.out.println("----");
-			n1.comparisonData = n1.connected.stream()
+			n1.comparisonData = n1.connected.getInternalHeap()
+					.stream().map(x->x.data)
+					.filter(x->x.value!=-1)
 					// .peek(x->{System.out.print(x.getKey()+"-"+x.getValue()+" ");})
 					.collect(Collectors.groupingBy(x -> x.degree, Collectors.counting())).entrySet().stream()
 					.sorted((x, y) -> x.getKey() - y.getKey())
 					.map(entry -> new int[] { entry.getKey(), entry.getValue().intValue() })
 					.toArray(size -> new int[size][2]);
 
-			n2.comparisonData = n2.connected.stream()
+			n2.comparisonData = n2.connected.getInternalHeap()
+					.stream().map(x->x.data)
+					.filter(x->x.value!=-1)
 					.collect(Collectors.groupingBy(x -> x.degree, Collectors.counting())).entrySet().stream()
 					.sorted((x, y) -> x.getKey() - y.getKey())
 					.map(entry -> new int[] { entry.getKey(), entry.getValue().intValue() })
@@ -126,7 +105,7 @@ public class MinVertexCover3 {
 				} else {
 					if (n1.comparisonData[i][1] > n2.comparisonData[j][1])
 						return -1;
-					else if (n1.comparisonData[i][1] < n2.comparisonData[i][1])
+					else if (n1.comparisonData[i][1] < n2.comparisonData[j][1])
 						return 1;
 					else {
 					}
@@ -135,34 +114,99 @@ public class MinVertexCover3 {
 				i++;
 				j++;
 			}
-
-//			if both nodes have same connected ones 
-//			then select one having maximum neighbors otherwise select any
-//			if((i==j && n1.connected.size()!=n2.connected.size() ) || 
-//					(i==n1.comparisonData.length && n1.connected.size() > n2.connected.size() ||
-//					(j==n2.comparisonData.length && n1.connected.size() < n2.connected.size()) ) ) {
-//				System.out.println("Ambiguity error found in comparison data and connected for "+n1.value +" and "+n2.value);
-//				System.out.println("i= "+i+" j= "+j+" \n n1= "+n1+" \n n2= "+n2);
-//				System.out.println(n1.comparisonData.length+" "+n2.comparisonData.length);
-//
-//				for(i=0;i<n1.comparisonData.length; i++) {
-//					System.out.print(n1.comparisonData[i][0]+":"+n1.comparisonData[i][1]+"  ");
-//				}System.out.println();
-//
-//				for(i=0;i<n2.comparisonData.length; i++) {
-//					System.out.print(n2.comparisonData[i][0]+":"+n2.comparisonData[i][1]+"  ");
-//				}System.out.println();
+			
+//			if(-n1.connected.getSize() + n2.connected.getSize() == 0) {
+//				System.out.println("possible runner ups");
 //				
-//				System.exit(1);
+//				System.out.println(a +" : \n:: "+n1.connected.getInternalHeap().stream().filter(x->x.data.value!=-1)
+//						.sorted((x,y)->x.data.degree-y.data.degree).map(x->x.data.degree)
+//						.collect(Collectors.toList()));
+//				System.out.println(b+" : \n:: "+n2.connected.getInternalHeap().stream().filter(x->x.data.value!=-1)
+//						.sorted((x,y)->x.data.degree-y.data.degree).map(x->x.data.degree)
+//						.collect(Collectors.toList()));
+//				
+//				System.out.println("stringified connects of runner ups :");
+//				
+//				System.out.println(
+//				n1.connected.getInternalHeap().stream().filter(x->x.data.value!=-1)
+//				.flatMap(x->((NodeForVersion3)x.data).connected.getInternalHeap().stream().filter(y->y.data.value!=-1))
+//				.sorted((x,y)->x.data.degree-y.data.degree).map(x->x.data.degree)
+//				.collect(Collectors.toList()));
+//				
+//				System.out.println(
+//						n2.connected.getInternalHeap().stream().filter(x->x.data.value!=-1)
+//						.flatMap(x->((NodeForVersion3)x.data).connected.getInternalHeap().stream().filter(y->y.data.value!=-1))
+//						.sorted((x,y)->x.data.degree-y.data.degree).map(x->x.data.degree)
+//						.collect(Collectors.toList()));
+//				
 //			}
-//			if(i==n1.comparisonData.length)return 1;	//n2 has more, so should be at top
-//			else if(j==n2.comparisonData.length)return -1; //n1 has more, so should be at top
-//			
-			return -n1.connected.size() + n2.connected.size();
+			
+			return -n1.connected.getSize() + n2.connected.getSize();
 
 		};
 
-		Heap queue = new Heap(new NodeForVersion3(-1), comp);
+		
+		Map<Integer, NodeForVersion3> graph = new HashMap<>();
+		NodeForVersion3 temp1 = null, temp2 = null;
+
+		for (int i = 0; i < edges.length; i++) {
+			// System.out.println(edges[i][0]+" = "+graph.containsKey(edges[i][0])+" &"+
+			// edges[i][1]+" = "+
+			// graph.containsKey(edges[i][1]));
+			temp1 = graph.getOrDefault(edges[i][0], new NodeForVersion3(edges[i][0]));
+			temp2 = graph.getOrDefault(edges[i][1], new NodeForVersion3(edges[i][1]));
+			// System.out.println("for edge"+ edges[i][0]+" - "+ edges[i][1]);
+			// as in one step both edges are being considered, no need to check reverse edge
+			// separately
+			// for directed graph, reverse edge will be considered irrespective of they
+			// actually are or not
+			// because any one can come first irrespective of direction
+//			System.out.println("adding "+ temp1.value+" to "+temp2.value);
+			if (!temp1.track.contains(temp2)) {
+
+				temp1.degree++;
+				temp2.degree++;
+				
+				if(temp1.connected==null)temp1.connected= new Heap(new NodeForVersion3(-1), comp);
+				if(temp2.connected==null)temp2.connected= new Heap(new NodeForVersion3(-1), comp);
+				
+				temp1.connected.addWithoutHeapify(temp2);
+				temp2.connected.addWithoutHeapify(temp1);
+				
+				temp1.track.add(temp2);
+				temp2.track.add(temp1);
+
+				graph.put(edges[i][0], temp1);
+				graph.put(edges[i][1], temp2);
+			}
+		}
+		
+		graph.entrySet().stream().forEach(entry->{entry.getValue().connected.heapify();});
+		
+		// System.out.println("Adjacency List="+ graph);
+		return graph;
+	}
+
+	
+
+	public int findMinimumVertexCover(int[][] edges, List<Integer> required, List<Integer> not_required) {
+
+		if (edges == null || edges.length == 0)
+			return 0;
+		if (edges.length == 1)
+			return 1;
+
+		Map<Integer, NodeForVersion3> graph = createGraph(edges);
+
+		int res = 0;
+
+		//sorting main queue on the basis of connected lowest degree child/neighbour
+		Comparator<CommonNode> comp = (a, b) -> {
+			
+			return a.degree - b.degree;
+		};
+		
+		Heap queue = new Heap(new NodeForVersion3(-1,0, comp), comp);
 
 		graph.values().stream().forEach(value -> {
 			queue.add(value);
@@ -177,15 +221,19 @@ public class MinVertexCover3 {
 	// O( (log V) * (V^3) ) in worst case
 	private int processQueue(Heap queue, List<Integer> required, List<Integer> not_required) {
 		int res = 0;
-
+//System.out.println("received graph = "+queue);
 		while (!queue.isEmpty()) { // V times
 			NodeForVersion3 node = (NodeForVersion3) queue.peek();
 
 			if (node.degree == 0) {
 				queue.remove(node);
 				not_required.add(node.value);
-				queue.heapify();
+				
 			} else {
+				
+				//find the minimum-degree-max-quantity-neighboured-parent among these lowest degree nodes
+				node = findNodeToPeek(queue);
+//				System.out.println("selected node = "+node+"\n queue="+queue);
 //				CommonNode n = queue.peek(), t=null, res1=null;
 //				List<CommonNode> list  = new ArrayList<>();
 //				while(!queue.isEmpty() && comp.compare(n, queue.peek()) ==0) {
@@ -219,16 +267,18 @@ public class MinVertexCover3 {
 				queue.remove(node); // (V-1) * O(log V) in worst case
 
 				// O(V) in worst case
-				Iterator<NodeForVersion3> itr = node.connected.iterator();
+				Iterator<HeapNode> itr = node.connected.iterator();
 
 				while (itr.hasNext()) { // V * V log V
 
-					NodeForVersion3 cN = itr.next();
-					cN.connected.remove(node);
+					NodeForVersion3 cN = (NodeForVersion3)itr.next().data;
+					cN.connected.removeWithoutHeapify(node);
 
 					// instead of directly heapifying, in all previous variations and current one-
 					// first remove and then add.
 					cN.degree--;
+					
+					queue.heapifyUp(cN);
 				}
 
 				required.add(node.value);
@@ -239,12 +289,116 @@ public class MinVertexCover3 {
 				node.comparisonData = null;
 				node.connectedMap.clear();
 
-				queue.heapify(); // V times[ V Log V for sorting + V for comparison b/w any 2 nodes ] = (log V) *
+//				queue.heapify(); // V times[ V Log V for sorting + V for comparison b/w any 2 nodes ] = (log V) *
 									// (V^2)
 			}
 		}
 
 		return res;
+	}
+
+
+
+	private NodeForVersion3 findNodeToPeek(Heap queue) { 
+		
+		NodeForVersion3 res = (NodeForVersion3)queue.poll(), temp = null, result=null;
+		
+//		System.out.println("heapify = "+res);
+		res.connected.heapify();
+//		if(res.value==14)
+//			System.out.println("\n \n now candidate starts =14 \n ");
+		
+		List<NodeForVersion3> list = new ArrayList<>();
+		
+		list.add(res);
+		
+		result=(NodeForVersion3)res.connected.peek();
+		
+		while(!queue.isEmpty() && res.degree == queue.peek().degree) {
+			temp = (NodeForVersion3)queue.poll();
+			list.add(temp);
+//			System.out.println("heapify = "+temp);
+			temp.connected.heapify();
+			
+//			System.out.println("sending below's peeks for comparison "+ (NodeForVersion3)res+"\n"+(NodeForVersion3)temp);
+			result = findWithMinDegreeMaxQuantityNeighboured(result, 
+					(NodeForVersion3)temp.connected.peek());
+			
+//			if(res.value==14) {
+//				System.out.println("result = "+result);
+//			}
+			
+		}
+//		System.out.println("candidates = "+ list);
+		list.stream().forEach(x-> queue.add(x));
+		
+//		System.out.println(queue);
+	
+		return result;
+	}
+	
+	NodeForVersion3 findWithMinDegreeMaxQuantityNeighboured(NodeForVersion3 n1, NodeForVersion3 n2) {
+		
+//		if(n1.value == n2.value)
+//				System.out.println("received ones = "+ n1+"\n"+n2);
+		
+			n1.comparisonData = n1.connected.getInternalHeap()
+					.stream().map(x->x.data)
+					.filter(x->x.value!=-1)
+					// .peek(x->{System.out.print(x.getKey()+"-"+x.getValue()+" ");})
+					.collect(Collectors.groupingBy(x -> x.degree, Collectors.counting())).entrySet().stream()
+					.sorted((x, y) -> x.getKey() - y.getKey())
+					.map(entry -> new int[] { entry.getKey(), entry.getValue().intValue() })
+					.toArray(size -> new int[size][2]);
+
+			n2.comparisonData = n2.connected.getInternalHeap()
+					.stream().map(x->x.data)
+					.filter(x->x.value!=-1)
+					.collect(Collectors.groupingBy(x -> x.degree, Collectors.counting())).entrySet().stream()
+					.sorted((x, y) -> x.getKey() - y.getKey())
+					.map(entry -> new int[] { entry.getKey(), entry.getValue().intValue() })
+					.toArray(size -> new int[size][2]);
+
+		
+//		if(n1.value==11 || n2.value==11) {
+//			System.out.println("compData for "+n1);
+//			for(int i=0;i<n1.comparisonData.length; i++) {
+//				System.out.print(n1.comparisonData[i][0]+":"+n1.comparisonData[i][1]+" ");
+//			}
+//			System.out.println("compData for "+n2);
+//			for(int i=0;i<n2.comparisonData.length; i++) {
+//				System.out.print(n2.comparisonData[i][0]+":"+n2.comparisonData[i][1]+" ");
+//			}
+//		}
+		
+		int i=0,j=0;
+		
+		while (i < n1.comparisonData.length && j < n2.comparisonData.length) {
+			if (n1.comparisonData[i][0] < n2.comparisonData[j][0]) {
+				return n1;
+			} else if (n1.comparisonData[i][0] > n2.comparisonData[j][0]) {
+				return n2;
+			} else {
+				if (n1.comparisonData[i][1] > n2.comparisonData[j][1])
+					return n1;
+				else if (n1.comparisonData[i][1] < n2.comparisonData[j][1])
+					return n2;
+				else {
+				}
+			}
+
+			i++;
+			j++;
+		}
+
+//		if(-n1.connected.getSize() + n2.connected.getSize() ==0 && n1.value!=n2.value) {
+//			System.out.println("now selecting on basis of size\n" +n1+"\n"+n2 );
+//			System.out.println(n1.value==n2.value);
+//			System.out.println(n1.value+" "+n2.value);
+//		}
+		
+		return -n1.connected.getSize() + n2.connected.getSize() <=0 ?n1 : n2;
+
 	}
 
 }
