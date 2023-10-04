@@ -19,12 +19,13 @@
 
 # For anyone willing to go for further analysis :-
 
-# So far whatever progress been made till var4 and 5, is there in implementation of var3 (var5 is commented) and for further progress and research, visualisation can be done to check exact properties of graph nodes that are being selected at a particular point and doing comparison with available results to determine those exact properties of nodes selected.    
-# But this will take much more time & efforts, so pausing it's development any further.    
+<b>So far whatever progress been made till var4 and 5, is there in implementation of var3 (var5 is commented) and for further progress and research, visualisation can be done to check exact properties of graph nodes that are being selected at a particular point and doing comparison with available results to determine those exact properties of nodes selected.</b><br/><br>
 
-# Result of var4 is giving 4/5 extra nodes per 200-500 vertices for hardest graph examples of DIMACS and BHOSLIB
+<b>But this will take much more time & efforts, so pausing it's development any further.</b><br><br>
 
-# Keeping variation 3/4/5 implementation to be highly unoptimized for analysis purpose.
+<b>Result of var4 is giving 4/5 extra nodes per 200-500 vertices for hardest graph examples of DIMACS and BHOSLIB</b><br><br>
+
+<b>Further optimizations can be done in implementation of variation 3/4/5</b><br>
 
 Time Complexity for variation1 of algorithm:    
     
@@ -198,7 +199,7 @@ This class 5 is the final solution that this author @vivek can give as of now fo
 
 Final Update: after testing, var3, var4, var5 .. all algorithms FAIL for DIMACS and BHOSLIB graphs.. these were tested on few of them like test-cases number 20 and 22.    
     
-# Here FAIL means that these variations are giving slightly more (by 4-5 per 200-500 vertices) number of minimum-vertex-cover-set than the one cited on website of DIMACS and BHOSLIB.
+<br><b>Here FAIL means that these variations are giving slightly more (by 4-5 per 200-500 vertices) number of minimum-vertex-cover-set than the one cited on website of DIMACS and BHOSLIB.</b><br><br>
 
-# This also means that these are giving nearby optimal solutions involving particular targets with logical reasons instead of selecting any node blindly among possible candidate nodes! ..  difference b/w this and other mvc (minimum vertex cover) algorithms out there on internet/research-papers!!
+<b>This also means that these are giving nearby optimal solutions involving particular targets with logical reasons instead of selecting any node blindly among possible candidate nodes! ..  <i>difference b/w this and other mvc (minimum vertex cover) algorithms out there on internet & research-papers</i>!!</b><br><br>
 

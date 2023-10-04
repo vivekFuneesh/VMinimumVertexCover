@@ -1,17 +1,24 @@
 package models;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import utility.Heap;
+
 public class NodeForVersion3 extends CommonNode {
 
-	public Set<NodeForVersion3> connected = new HashSet<>();
+	public Set<NodeForVersion3> track = null;
 
 	// degree - Number of such connected Nodes
+	// for further optimization use LinkedHashMap<Int, new Node{ Set<Node3>, int degree, int count}> for 
+	// maintaining connected data instead of heap, comparisonData
 	public Map<Integer, Integer> connectedMap = new HashMap<>();
+
+	public Heap connected = null;
 
 	/**
 	 * Instead of using array, use a string s.t. 111122223333.. and compare them
@@ -21,6 +28,13 @@ public class NodeForVersion3 extends CommonNode {
 
 	public NodeForVersion3(int v) {
 		this.value = v;
+		this.track = new HashSet<>();
+	}
+
+	public NodeForVersion3(int v, int d, Comparator<CommonNode> comp) {
+		this.value = v;
+		this.degree = d;
+		this.connected = new Heap(new NodeForVersion3(-1), comp);
 	}
 
 	@Override
@@ -30,7 +44,8 @@ public class NodeForVersion3 extends CommonNode {
 
 	@Override
 	public String toString() {
-		return this.value + "=" + connected.stream().map(x -> x.value + "." + x.degree).collect(Collectors.toList());
+		return this.value + "=" + connected.getInternalHeap().stream().map(x -> x.data.value + "." + x.data.degree)
+				.collect(Collectors.toList());
 	}
 
 }
