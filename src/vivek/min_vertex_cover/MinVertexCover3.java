@@ -171,9 +171,9 @@ public class MinVertexCover3 {
 			}
 		}
 
-		graph.entrySet().stream().forEach(entry -> {
-			entry.getValue().connected.heapify();
-		});
+		// graph.entrySet().stream().forEach(entry -> {
+		// 	entry.getValue().connected.heapify();
+		// });
 
 		// System.out.println("Adjacency List="+ graph);
 		return graph;
