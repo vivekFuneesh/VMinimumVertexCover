@@ -217,22 +217,6 @@ public class Heap {
 
 	}
 
-	public void addWithoutHeapify(CommonNode element) {
-		// System.out.println("before pus, heap= "+Heap);
-		HeapNode tmp = new HeapNode(element);
-		if (size == Heap.size() - 1) {
-			Heap.add(tmp);
-			tmp.index = ++size;
-		} else {
-			Heap.set(++size, tmp);
-			tmp.index = size;
-		}
-
-		trackIndex.put(element, tmp.index);
-		// System.out.println("after push, heap= "+Heap);
-
-	}
-
 	public void remove(CommonNode element) {
 
 		if (size == 0)
@@ -244,19 +228,6 @@ public class Heap {
 		trackIndex.remove(element);
 		size--;
 		downHeapify(ind);
-	}
-
-	public void removeWithoutHeapify(CommonNode element) {
-
-		if (size == 0)
-			throw new RuntimeException("Empty queue");
-
-		int ind = trackIndex.get(element);
-		swap(ind, size);
-		Heap.remove(size);
-		trackIndex.remove(element);
-		size--;
-
 	}
 
 	public CommonNode poll() {
@@ -312,4 +283,48 @@ public class Heap {
 		Heap.add(tmp);
 		trackIndex.clear();
 	}
+	
+	//-------------------------
+	//-------------------------
+	
+	public void addWithoutHeapify(CommonNode element) {
+		// System.out.println("before pus, heap= "+Heap);
+		HeapNode tmp = new HeapNode(element);
+		if (size == Heap.size() - 1) {
+			Heap.add(tmp);
+			tmp.index = ++size;
+		} else {
+			Heap.set(++size, tmp);
+			tmp.index = size;
+		}
+
+		trackIndex.put(element, tmp.index);
+
+	}
+	
+	public void removeWithoutHeapify(CommonNode element) {
+
+		if (size == 0)
+			throw new RuntimeException("Empty queue");
+
+		int ind = trackIndex.get(element);
+		swap(ind, size);
+		Heap.remove(size);
+		trackIndex.remove(element);
+		size--;
+
+	}
+	
+	public CommonNode pollWithoutHeapify() {
+		if (size == 0)
+			throw new RuntimeException("Empty queue");
+		CommonNode min = Heap.get(1).data;
+		swap(1, size);
+
+		Heap.remove(size--);
+		trackIndex.remove(min);
+		
+		return min;
+	}
+
 }

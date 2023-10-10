@@ -286,7 +286,7 @@ public class ExternalTestVariant3 {
 		System.out.println(" required=" + required + " \n" + required.size());
 	}
 
-	// below giving 420, required ?
+	// below giving 240, required ?
 	@Test
 	@Order(22)
 	public void testCase22() throws IOException {
@@ -592,6 +592,6 @@ public class ExternalTestVariant3 {
 
 		assertEquals(node.getMinimumCoverSize(),
 				minVertexCover.findMinimumVertexCover(node.getEdges(), required, not_required));
-		System.out.println("not confirmed-- , required=" + required + " \n" + required.size());
+		System.out.println("required=" + required + " \n" + required.size());
 	}
 }
