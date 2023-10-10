@@ -14,9 +14,10 @@ public class NodeForVersion3 extends CommonNode {
 	public Set<NodeForVersion3> track = null;
 
 	// degree - Number of such connected Nodes
-	// for further optimization use LinkedHashMap<Int, new Node{ Set<Node3>, int degree, int count}> for 
+	// for further optimization use LinkedHashMap<Int, new Node{ Set<Node3>, int
+	// degree, int count}> for
 	// maintaining connected data instead of heap, comparisonData
-	public Map<Integer, Integer> connectedMap = new HashMap<>();
+//	public Map<Integer, Integer> connectedMap = new HashMap<>();
 
 	public Heap connected = null;
 
@@ -28,13 +29,14 @@ public class NodeForVersion3 extends CommonNode {
 
 	public NodeForVersion3(int v) {
 		this.value = v;
+		this.degree = 0;
 		this.track = new HashSet<>();
+		this.connected = new Heap(new NodeForVersion3(-1, 0));
 	}
 
-	public NodeForVersion3(int v, int d, Comparator<CommonNode> comp) {
+	public NodeForVersion3(int v, int d) {
 		this.value = v;
 		this.degree = d;
-		this.connected = new Heap(new NodeForVersion3(-1), comp);
 	}
 
 	@Override
