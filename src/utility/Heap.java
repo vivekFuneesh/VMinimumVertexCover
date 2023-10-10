@@ -283,10 +283,10 @@ public class Heap {
 		Heap.add(tmp);
 		trackIndex.clear();
 	}
-	
-	//-------------------------
-	//-------------------------
-	
+
+	// -------------------------
+	// -------------------------
+
 	public void addWithoutHeapify(CommonNode element) {
 		// System.out.println("before pus, heap= "+Heap);
 		HeapNode tmp = new HeapNode(element);
@@ -301,7 +301,7 @@ public class Heap {
 		trackIndex.put(element, tmp.index);
 
 	}
-	
+
 	public void removeWithoutHeapify(CommonNode element) {
 
 		if (size == 0)
@@ -314,7 +314,7 @@ public class Heap {
 		size--;
 
 	}
-	
+
 	public CommonNode pollWithoutHeapify() {
 		if (size == 0)
 			throw new RuntimeException("Empty queue");
@@ -323,7 +323,7 @@ public class Heap {
 
 		Heap.remove(size--);
 		trackIndex.remove(min);
-		
+
 		return min;
 	}
 

@@ -81,7 +81,7 @@ public class MinVertexCover3 {
 	// O( (log V) * (V^3) ) in worst case
 	private int processQueue(Heap queue, List<Integer> required, List<Integer> not_required) {
 		int res = 0;
-		//System.out.println("received graph = "+queue);
+		// System.out.println("received graph = "+queue);
 		while (!queue.isEmpty()) { // V times
 			NodeForVersion3 node = (NodeForVersion3) queue.peek();
 
@@ -126,7 +126,7 @@ public class MinVertexCover3 {
 		return res;
 	}
 
-	//O( V^2 * log V )
+	// O( V^2 * log V )
 	/**
 	 * @param queue
 	 * @return
@@ -149,63 +149,53 @@ public class MinVertexCover3 {
 		Set<NodeForVersion3> candidateParents = new HashSet<>();
 
 		candidateParents.addAll(
-				list.stream().flatMap(x->x.connected.getInternalHeap().stream().filter(y->y.data.value!=-1))
-				.map(x->(NodeForVersion3)x.data).collect(Collectors.toList())			
-				);
-		candidateParents.stream().forEach(x->{
-			x.comparisonData=null;
+				list.stream().flatMap(x -> x.connected.getInternalHeap().stream().filter(y -> y.data.value != -1))
+						.map(x -> (NodeForVersion3) x.data).collect(Collectors.toList()));
+		candidateParents.stream().forEach(x -> {
+			x.comparisonData = null;
 		});
 
-
-		List<NodeForVersion3> sortedParents = candidateParents.stream()
-				.sorted((n1,n2)->{
-					if(n1.comparisonData==null) {
-						n1.comparisonData=getComparisonData(n1);
-					}
-
-					if(n2.comparisonData == null) {
-						n2.comparisonData=getComparisonData(n2);
-					}
-					return compareComparisonData(n1, n2);
-
-				}).collect(Collectors.toList());
-		
-		list.stream().forEach(x -> queue.add(x));
-/***		
-		List<NodeForVersion3> finalCandidates = new ArrayList<>();
-		
-		if(sortedParents.size() > 1) {
-			finalCandidates = sortedParents.stream()
-					.filter(n1->{
-						NodeForVersion3 n2 = sortedParents.get(0);
-
-						return compareComparisonData(n1, n2) == 0 ? true : false;
-
-					}).collect(Collectors.toList());
-
-			if(finalCandidates.size()>1) {
-				System.out.println("\n finalCandidates (value.degree) , sortedParents.size() = "+sortedParents.size()+" "
-						+ "\n queue.size = "+queue.getSize());
-				
-				System.out.println("\n\n"+queue+"\n\n");
-				queue.getInternalHeap().stream().filter(x->x.data.value!=-1)
-					.forEach(x->{
-						System.out.print(x.data.value+"."+x.data.degree+" = ");
-						((NodeForVersion3)x.data).connected.getInternalHeap().stream()
-							.forEach(y->{
-								System.out.print(y.data.value+"."+y.data.degree+", ");
-							});
-						System.out.println();
-					});
-				
-				finalCandidates.stream().map(x->x.value+"."+x.degree+", ").forEach(System.out::print);
-				System.out.println("\n result = "+ sortedParents.get(0).value+"."+sortedParents.get(0).degree);
+		List<NodeForVersion3> sortedParents = candidateParents.stream().sorted((n1, n2) -> {
+			if (n1.comparisonData == null) {
+				n1.comparisonData = getComparisonData(n1);
 			}
-		}
-**/
-		
+
+			if (n2.comparisonData == null) {
+				n2.comparisonData = getComparisonData(n2);
+			}
+			return compareComparisonData(n1, n2);
+
+		}).collect(Collectors.toList());
+
+		list.stream().forEach(x -> queue.add(x));
+		/***
+		 * List<NodeForVersion3> finalCandidates = new ArrayList<>();
+		 * 
+		 * if(sortedParents.size() > 1) { finalCandidates = sortedParents.stream()
+		 * .filter(n1->{ NodeForVersion3 n2 = sortedParents.get(0);
+		 * 
+		 * return compareComparisonData(n1, n2) == 0 ? true : false;
+		 * 
+		 * }).collect(Collectors.toList());
+		 * 
+		 * if(finalCandidates.size()>1) { System.out.println("\n finalCandidates
+		 * (value.degree) , sortedParents.size() = "+sortedParents.size()+" " + "\n
+		 * queue.size = "+queue.getSize());
+		 * 
+		 * System.out.println("\n\n"+queue+"\n\n");
+		 * queue.getInternalHeap().stream().filter(x->x.data.value!=-1) .forEach(x->{
+		 * System.out.print(x.data.value+"."+x.data.degree+" = ");
+		 * ((NodeForVersion3)x.data).connected.getInternalHeap().stream() .forEach(y->{
+		 * System.out.print(y.data.value+"."+y.data.degree+", "); });
+		 * System.out.println(); });
+		 * 
+		 * finalCandidates.stream().map(x->x.value+"."+x.degree+",
+		 * ").forEach(System.out::print); System.out.println("\n result = "+
+		 * sortedParents.get(0).value+"."+sortedParents.get(0).degree); } }
+		 **/
+
 		result = sortedParents.get(0);
-		
+
 		return result;
 	}
 
@@ -235,7 +225,7 @@ public class MinVertexCover3 {
 
 	}
 
-	int[][] getComparisonData(NodeForVersion3 n1){
+	int[][] getComparisonData(NodeForVersion3 n1) {
 		return n1.comparisonData = n1.connected.getInternalHeap().stream().map(x -> x.data).filter(x -> x.value != -1)
 				.collect(Collectors.groupingBy(x -> x.degree, Collectors.counting())).entrySet().stream()
 				.sorted((x, y) -> x.getKey() - y.getKey())
