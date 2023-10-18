@@ -1,4 +1,4 @@
-# VMinimumVertexCover [DRAFTED-VERSION]  
+# VMinimumVertexCover [Phase 1 complete]  
 #                              Copyright (C) 2023 Vivek Mangla
  To solve minimum vertex cover problem in minimal time complexity
  
